@@ -1,0 +1,86 @@
+/* Arabic text for every element marked data-i18n="key".
+   English lives in the HTML itself, so English needs no entry here. */
+window.I18N_AR = {
+  "nav.work": "الأعمال",
+  "nav.services": "الخدمات",
+  "nav.process": "المراحل",
+  "nav.contact": "تواصل",
+  "nav.talk": "لنتحدث",
+  "status": "متاحون لمشاريع جديدة",
+
+  "hero.solid": "نَسَق",
+  "hero.outline": "ستوديو",
+  "hero.kicker": "استوديو تصميم وتطوير مواقع",
+  "hero.text": "نصمّم ونبني مواقع وواجهات وهويات بصرية واضحة وسريعة، ومريحة في الاستخدام.",
+  "hero.cta": "شاهد أعمالنا",
+
+  "work.ghost": "أعمالنا",
+  "work.title": "/أعمال مختارة",
+  "filter.all": "الكل",
+  "filter.website": "مواقع",
+  "filter.branding": "هويات",
+  "filter.exploration": "تجارب",
+  "slot.title": "المشروع القادم",
+  "slot.text": "هذه المساحة تنتظر مشروعك.",
+  "slot.cta": "ابدأ مشروعك",
+  "empty": "لا يوجد شيء هنا بعد. قريبًا.",
+  "year.website": "موقع",
+
+  "services.title": "/خدماتنا",
+  "s1.name": "تصميم الواجهات وتجربة المستخدم",
+  "s1.text": "واجهات واضحة وقابلة للتوسع، للمواقع ولوحات التحكم وتطبيقات الجوال.",
+  "s1.tags": "مخططات · نماذج تفاعلية · أنظمة تصميم",
+  "s2.name": "تصميم وتطوير المواقع",
+  "s2.text": "مواقع متكاملة نصمّمها ونبرمجها بأنفسنا، وتعمل بسرعة على كل جوال.",
+  "s2.tags": "صفحات هبوط · مواقع كاملة · حجوزات",
+  "s3.name": "الهوية البصرية",
+  "s3.text": "شعار وألوان وخطوط، وقواعد تحافظ على اتساق العلامة في كل مكان.",
+  "s3.tags": "شعار · ألوان · دليل استخدام",
+  "s4.name": "الموشن والأنيميشن",
+  "s4.text": "حركة للواجهات ومقاطع قصيرة تعطي المنتج روحًا.",
+  "s4.tags": "تفاعلات دقيقة · ريلز · مقدّمات",
+
+  "process.ghost": "المراحل",
+  "process.title": "/مراحل العمل",
+  "process.note": "كيف يمشي المشروع",
+  "p1.name": "الاستكشاف", "p1.text": "نفهم نشاطك وجمهورك وهدفك.", "p1.when": "الأسبوع 1", "p1.follow": "نسمع",
+  "p2.name": "التصميم", "p2.text": "الهيكل والشكل والحركة، نراجعها معك شاشة بشاشة.", "p2.when": "الأسبوع 2–3", "p2.follow": "نرسم",
+  "p3.name": "التطوير", "p3.text": "نبرمجه ونختبره على أجهزة حقيقية ونجعله سريعًا.", "p3.when": "الأسبوع 3–5", "p3.follow": "نبرمج",
+  "p4.name": "الإطلاق", "p4.text": "ننشر الموقع ونسلّمه، ونبقى معك للتعديلات.", "p4.when": "الأسبوع 6", "p4.follow": "انطلق!",
+
+  "cta.title": "عندك مشروع في بالك؟",
+  "cta.alt": "Have a project in mind? Let's build it together.",
+  "cta.button": "تواصل معنا",
+
+  "foot.copy": "© 2026 نسق ستوديو",
+  "foot.alt": "NASAQ STUDIO",
+  "foot.top": "للأعلى ↑",
+  "foot.home": "الرئيسية ↑",
+
+  "proj.back": "← كل الأعمال",
+  "proj.client": "العميل",
+  "proj.year": "السنة",
+  "proj.role": "الدور",
+  "proj.live": "الموقع",
+  "proj.visit": "زيارة ↗",
+  "proj.linkSoon": "الرابط قريبًا",
+  "proj.overview": "نظرة عامة",
+  "proj.challenge": "التحدي",
+  "proj.solution": "الحل",
+  "proj.visitBig": "زيارة الموقع",
+  "proj.similar": "ابدأ مشروعًا مشابهًا",
+  "proj.soonPill": "رابط الموقع قريبًا",
+  "draft": "مسودة",
+  "cover.soon": "الصور قريبًا",
+  "socials": "روابط التواصل"
+};
+
+/* Helpers: current language, a project field in that language, a UI string. */
+window.LANG = document.documentElement.lang === 'ar' ? 'ar' : 'en';
+window.tr = function (v) {
+  if (v && typeof v === 'object' && !Array.isArray(v)) return v[window.LANG] || v.en;
+  return v;
+};
+window.t = function (key, en) {
+  return window.LANG === 'ar' && window.I18N_AR[key] ? window.I18N_AR[key] : en;
+};

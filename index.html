@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -8,8 +8,14 @@
 <meta name="description" content="Nasaq Studio designs and builds websites, interfaces and brands.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..900,0..100,0..1&family=Lalezar&display=swap">
-<script>document.documentElement.classList.add('js-intro')</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..900,0..100,0..1&family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=Lalezar&display=swap">
+<script>
+  (function (d) {
+    var l; try { l = localStorage.getItem('nasaq-lang'); } catch (e) {}
+    if (l === 'ar') { d.lang = 'ar'; d.dir = 'rtl'; }
+    d.classList.add('js-intro');
+  })(document.documentElement);
+</script>
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -17,20 +23,21 @@
 <div class="grain" aria-hidden="true"></div>
 <div class="iris" aria-hidden="true"></div>
 <div class="follower" aria-hidden="true"><span></span></div>
+<button class="lang-tab" id="lang-tab" type="button"></button>
 
 <header class="nav">
   <div class="nav-in">
-    <a class="logo" href="#top" aria-label="Nasaq Studio, home">
+    <a class="logo" href="#top" aria-label="Nasaq Studio">
       <span class="logo-ar" lang="ar" dir="rtl">نسق</span><span class="logo-en">NASAQ</span>
     </a>
-    <span class="pill status"><i></i>Available for new projects</span>
+    <span class="pill status"><i></i><span data-i18n="status">Available for new projects</span></span>
     <nav class="links" aria-label="Sections">
-      <a href="#work">Work <sup data-count="work">01</sup></a>
-      <a href="#services">Services <sup>04</sup></a>
-      <a href="#process">Process <sup>04</sup></a>
-      <a href="#contact">Contact</a>
+      <a href="#work"><span data-i18n="nav.work">Work</span> <sup data-count="work">01</sup></a>
+      <a href="#services"><span data-i18n="nav.services">Services</span> <sup>04</sup></a>
+      <a href="#process"><span data-i18n="nav.process">Process</span> <sup>04</sup></a>
+      <a href="#contact" data-i18n="nav.contact">Contact</a>
     </nav>
-    <a class="btn btn-ink" href="#contact">Let's talk <span class="arr">↗</span></a>
+    <a class="btn btn-ink" href="#contact"><span data-i18n="nav.talk">Let's talk</span> <span class="arr">↗</span></a>
   </div>
 </header>
 
@@ -40,9 +47,9 @@
   <section class="hero">
     <div class="rays" aria-hidden="true"></div>
     <div class="wrap hero-in">
-      <h1 class="hero-title" aria-label="Nasaq Studio">
-        <span class="line solid" data-split>NASAQ</span>
-        <span class="line outline" data-split>STUDIO</span>
+      <h1 class="hero-title">
+        <span class="line solid" data-split data-i18n="hero.solid">NASAQ</span>
+        <span class="line outline" data-split data-i18n="hero.outline">STUDIO</span>
       </h1>
 
       <div class="seal" aria-hidden="true">
@@ -50,18 +57,18 @@
           <defs><path id="ring" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs>
           <circle cx="100" cy="100" r="98" class="seal-bg"/>
           <circle cx="100" cy="100" r="62" class="seal-core"/>
-          <text class="seal-ring"><textPath href="#ring">DESIGN · WEB · BRANDING · MOTION · EST. 2026 ·</textPath></text>
+          <text class="seal-ring" direction="ltr"><textPath href="#ring">DESIGN · WEB · BRANDING · MOTION · EST. 2026 ·</textPath></text>
         </svg>
         <span class="seal-ar" lang="ar" dir="rtl">نسق</span>
       </div>
 
       <div class="hero-foot">
         <div class="hero-copy reveal">
-          <h2>Design &amp; web studio</h2>
-          <p>We design and build websites, interfaces and brands that are clear, quick and a pleasure to use.</p>
-          <a class="btn btn-ink" href="#work">See the work <span class="arr">↘</span></a>
+          <h2 data-i18n="hero.kicker">Design &amp; web studio</h2>
+          <p data-i18n="hero.text">We design and build websites, interfaces and brands that are clear, quick and a pleasure to use.</p>
+          <a class="btn btn-ink" href="#work"><span data-i18n="hero.cta">See the work</span> <span class="arr">↘</span></a>
         </div>
-        <ul class="socials reveal" aria-label="Social links">
+        <ul class="socials reveal">
           <li><a class="pill" href="#" data-todo>Instagram</a></li>
           <li><a class="pill" href="#" data-todo>Behance</a></li>
           <li><a class="pill" href="#" data-todo>Dribbble</a></li>
@@ -73,15 +80,15 @@
 
   <!-- WORK -->
   <section class="sec work" id="work">
-    <div class="ghost" aria-hidden="true">PORTFOLIO</div>
+    <div class="ghost" aria-hidden="true" data-i18n="work.ghost">PORTFOLIO</div>
     <div class="wrap">
       <div class="sec-head">
-        <h2 class="sec-title" data-split-words>/Selected work</h2>
-        <div class="filters" role="tablist" aria-label="Filter projects">
-          <button class="chip is-on" data-filter="all" role="tab" aria-selected="true">All</button>
-          <button class="chip" data-filter="website" role="tab" aria-selected="false">Websites</button>
-          <button class="chip" data-filter="branding" role="tab" aria-selected="false">Branding</button>
-          <button class="chip" data-filter="exploration" role="tab" aria-selected="false">Exploration</button>
+        <h2 class="sec-title" data-split-words data-i18n="work.title">/Selected work</h2>
+        <div class="filters" role="tablist">
+          <button class="chip is-on" data-filter="all" role="tab" aria-selected="true" data-i18n="filter.all">All</button>
+          <button class="chip" data-filter="website" role="tab" aria-selected="false" data-i18n="filter.website">Websites</button>
+          <button class="chip" data-filter="branding" role="tab" aria-selected="false" data-i18n="filter.branding">Branding</button>
+          <button class="chip" data-filter="exploration" role="tab" aria-selected="false" data-i18n="filter.exploration">Exploration</button>
         </div>
       </div>
       <div class="grid" id="grid"></div>
@@ -91,42 +98,42 @@
   <!-- SERVICES -->
   <section class="sec services" id="services">
     <div class="wrap">
-      <h2 class="sec-title" data-split-words>/Services</h2>
+      <h2 class="sec-title" data-split-words data-i18n="services.title">/Services</h2>
       <ul class="acc">
         <li class="acc-item is-open">
           <button class="acc-head" aria-expanded="true">
-            <span class="acc-name">UI/UX Design</span><span class="acc-icon" aria-hidden="true"></span>
+            <span class="acc-name" data-i18n="s1.name">UI/UX Design</span><span class="acc-icon" aria-hidden="true"></span>
           </button>
           <div class="acc-body"><div class="acc-inner">
-            <p>Clear, scalable interfaces for websites, dashboards and mobile apps.</p>
-            <div class="ticket t-mustard" aria-hidden="true"><b>UI</b><span>wireframes · prototypes · systems</span></div>
+            <p data-i18n="s1.text">Clear, scalable interfaces for websites, dashboards and mobile apps.</p>
+            <div class="ticket t-mustard" aria-hidden="true"><b>UI</b><span data-i18n="s1.tags">wireframes · prototypes · systems</span></div>
           </div></div>
         </li>
         <li class="acc-item">
           <button class="acc-head" aria-expanded="false">
-            <span class="acc-name">Web Design &amp; Dev</span><span class="acc-icon" aria-hidden="true"></span>
+            <span class="acc-name" data-i18n="s2.name">Web Design &amp; Dev</span><span class="acc-icon" aria-hidden="true"></span>
           </button>
           <div class="acc-body"><div class="acc-inner">
-            <p>Complete websites, designed and coded by us, fast on every phone.</p>
-            <div class="ticket t-red" aria-hidden="true"><b>WEB</b><span>landing pages · full sites · bookings</span></div>
+            <p data-i18n="s2.text">Complete websites, designed and coded by us, fast on every phone.</p>
+            <div class="ticket t-red" aria-hidden="true"><b>WEB</b><span data-i18n="s2.tags">landing pages · full sites · bookings</span></div>
           </div></div>
         </li>
         <li class="acc-item">
           <button class="acc-head" aria-expanded="false">
-            <span class="acc-name">Branding</span><span class="acc-icon" aria-hidden="true"></span>
+            <span class="acc-name" data-i18n="s3.name">Branding</span><span class="acc-icon" aria-hidden="true"></span>
           </button>
           <div class="acc-body"><div class="acc-inner">
-            <p>Logos, colour, type and the rules that keep a brand consistent.</p>
-            <div class="ticket t-blue" aria-hidden="true"><b>ID</b><span>logo · palette · guidelines</span></div>
+            <p data-i18n="s3.text">Logos, colour, type and the rules that keep a brand consistent.</p>
+            <div class="ticket t-blue" aria-hidden="true"><b>ID</b><span data-i18n="s3.tags">logo · palette · guidelines</span></div>
           </div></div>
         </li>
         <li class="acc-item">
           <button class="acc-head" aria-expanded="false">
-            <span class="acc-name">Motion &amp; Animation</span><span class="acc-icon" aria-hidden="true"></span>
+            <span class="acc-name" data-i18n="s4.name">Motion &amp; Animation</span><span class="acc-icon" aria-hidden="true"></span>
           </button>
           <div class="acc-body"><div class="acc-inner">
-            <p>Interface motion and short animations that make a product feel alive.</p>
-            <div class="ticket t-orange" aria-hidden="true"><b>FX</b><span>micro-interactions · reels · intros</span></div>
+            <p data-i18n="s4.text">Interface motion and short animations that make a product feel alive.</p>
+            <div class="ticket t-orange" aria-hidden="true"><b>FX</b><span data-i18n="s4.tags">micro-interactions · reels · intros</span></div>
           </div></div>
         </li>
       </ul>
@@ -135,32 +142,32 @@
 
   <!-- PROCESS -->
   <section class="sec process" id="process">
-    <div class="ghost ghost-dark" aria-hidden="true">PROCESS</div>
+    <div class="ghost ghost-dark" aria-hidden="true" data-i18n="process.ghost">PROCESS</div>
     <div class="wrap">
       <div class="sec-head">
-        <h2 class="sec-title" data-split-words>/Process</h2>
-        <span class="sec-note">How a project runs</span>
+        <h2 class="sec-title" data-split-words data-i18n="process.title">/Process</h2>
+        <span class="sec-note" data-i18n="process.note">How a project runs</span>
       </div>
       <ol class="rows">
-        <li class="row" data-follow="Listen">
+        <li class="row" data-follow="Listen" data-follow-key="p1.follow">
           <span class="row-n">01</span>
-          <span class="row-main"><b>Discover</b><em>We learn the business, the audience and the goal.</em></span>
-          <span class="row-when">Week 1</span>
+          <span class="row-main"><b data-i18n="p1.name">Discover</b><em data-i18n="p1.text">We learn the business, the audience and the goal.</em></span>
+          <span class="row-when" data-i18n="p1.when">Week 1</span>
         </li>
-        <li class="row" data-follow="Sketch">
+        <li class="row" data-follow="Sketch" data-follow-key="p2.follow">
           <span class="row-n">02</span>
-          <span class="row-main"><b>Design</b><em>Structure, look and motion, reviewed with you screen by screen.</em></span>
-          <span class="row-when">Weeks 2–3</span>
+          <span class="row-main"><b data-i18n="p2.name">Design</b><em data-i18n="p2.text">Structure, look and motion, reviewed with you screen by screen.</em></span>
+          <span class="row-when" data-i18n="p2.when">Weeks 2–3</span>
         </li>
-        <li class="row" data-follow="Code">
+        <li class="row" data-follow="Code" data-follow-key="p3.follow">
           <span class="row-n">03</span>
-          <span class="row-main"><b>Build</b><em>We code it, test it on real phones and make it fast.</em></span>
-          <span class="row-when">Weeks 3–5</span>
+          <span class="row-main"><b data-i18n="p3.name">Build</b><em data-i18n="p3.text">We code it, test it on real phones and make it fast.</em></span>
+          <span class="row-when" data-i18n="p3.when">Weeks 3–5</span>
         </li>
-        <li class="row" data-follow="Go!">
+        <li class="row" data-follow="Go!" data-follow-key="p4.follow">
           <span class="row-n">04</span>
-          <span class="row-main"><b>Launch</b><em>We publish, hand over, and stay on for changes.</em></span>
-          <span class="row-when">Week 6</span>
+          <span class="row-main"><b data-i18n="p4.name">Launch</b><em data-i18n="p4.text">We publish, hand over, and stay on for changes.</em></span>
+          <span class="row-when" data-i18n="p4.when">Week 6</span>
         </li>
       </ol>
     </div>
@@ -170,11 +177,11 @@
   <section class="sec contact" id="contact">
     <div class="rays rays-soft" aria-hidden="true"></div>
     <div class="wrap contact-in">
-      <span class="pill status"><i></i>Available for new projects</span>
-      <h2 class="cta-title" data-split-words>Have a project in mind?</h2>
-      <p class="cta-ar" lang="ar" dir="rtl">عندك مشروع؟ خلّنا نسوّيه سوا.</p>
-      <a class="btn btn-red magnetic" href="#" data-todo>Contact us <span class="arr">↗</span></a>
-      <ul class="socials socials-row" aria-label="Social links">
+      <span class="pill status"><i></i><span data-i18n="status">Available for new projects</span></span>
+      <h2 class="cta-title" data-split-words data-i18n="cta.title">Have a project in mind?</h2>
+      <p class="cta-alt" lang="ar" dir="rtl" data-i18n="cta.alt" data-alt-lang>عندك مشروع؟ خلّنا نسوّيه سوا.</p>
+      <a class="btn btn-red magnetic" href="#" data-todo><span data-i18n="cta.button">Contact us</span> <span class="arr">↗</span></a>
+      <ul class="socials socials-row">
         <li><a class="pill" href="#" data-todo>Instagram</a></li>
         <li><a class="pill" href="#" data-todo>Behance</a></li>
         <li><a class="pill" href="#" data-todo>Dribbble</a></li>
@@ -186,15 +193,16 @@
 
 <footer class="foot">
   <div class="wrap foot-in">
-    <span>© 2026 Nasaq Studio</span>
-    <span class="foot-ar" lang="ar" dir="rtl">نسق ستوديو</span>
-    <a href="#top">Back to top ↑</a>
+    <span data-i18n="foot.copy">© 2026 Nasaq Studio</span>
+    <span class="foot-alt" lang="ar" dir="rtl" data-i18n="foot.alt" data-alt-lang>نسق ستوديو</span>
+    <a href="#top" data-i18n="foot.top">Back to top ↑</a>
   </div>
 </footer>
 
 <script src="assets/vendor/gsap.min.js"></script>
 <script src="assets/vendor/ScrollTrigger.min.js"></script>
 <script src="assets/vendor/lenis.min.js"></script>
+<script src="assets/i18n.js"></script>
 <script src="assets/projects.js"></script>
 <script src="assets/cover.js"></script>
 <script src="assets/main.js"></script>

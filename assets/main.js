@@ -23,12 +23,45 @@
     el.style.backgroundImage = 'url(' + c.toDataURL() + ')';
   })();
 
-  /* ---------- Text splitting ---------- */
-  document.querySelectorAll('[data-split]').forEach(function (el) {
-    el.innerHTML = el.textContent.split('').map(function (ch) {
-      return '<span class="ch">' + ch + '</span>';
-    }).join('');
-  });
+  /* ---------- Language ---------- */
+  var AR = window.LANG === 'ar';
+  var t = window.t, tr = window.tr;
+  if (AR) {
+    document.querySelectorAll('[data-i18n]').forEach(function (el) {
+      var v = window.I18N_AR[el.dataset.i18n];
+      if (v) el.textContent = v;
+    });
+    // Lines that show the *other* language switch to English when the page is Arabic
+    document.querySelectorAll('[data-alt-lang]').forEach(function (el) { el.lang = 'en'; el.dir = 'ltr'; });
+    document.querySelectorAll('[data-follow-key]').forEach(function (el) {
+      el.dataset.follow = window.I18N_AR[el.dataset.followKey] || el.dataset.follow;
+    });
+  }
+  var langTab = document.getElementById('lang-tab');
+  var leave = null; // set below once the iris exists; closes the iris, then runs a callback
+  if (langTab) {
+    langTab.textContent = AR ? 'English' : 'عربي';
+    langTab.lang = AR ? 'en' : 'ar';
+    langTab.setAttribute('aria-label', AR ? 'Switch to English' : 'التبديل إلى العربية');
+    langTab.addEventListener('click', function (e) {
+      var go = function () {
+        try { localStorage.setItem('nasaq-lang', AR ? 'en' : 'ar'); } catch (err) {}
+        location.reload();
+      };
+      if (leave) leave(e, go); else go();
+    });
+  }
+  document.querySelectorAll('[data-todo]').forEach(function (a) { a.title = t('proj.linkSoon', 'Link coming soon'); });
+
+  /* ---------- Text splitting (letters in English; whole words in Arabic so letters stay joined) ---------- */
+  function splitInto(el) {
+    var words = el.textContent.trim().split(/\s+/);
+    el.innerHTML = words.map(function (w) {
+      if (AR) return '<span class="w"><span class="ch">' + w + '</span></span>';
+      return '<span class="w">' + w.split('').map(function (ch) { return '<span class="ch">' + ch + '</span>'; }).join('') + '</span>';
+    }).join(' ');
+  }
+  document.querySelectorAll('[data-split]').forEach(splitInto);
   document.querySelectorAll('[data-split-words]').forEach(function (el) {
     el.innerHTML = el.textContent.trim().split(/\s+/).map(function (w) {
       return '<span class="word"><span>' + w + '</span></span>';
@@ -38,21 +71,23 @@
   /* ---------- Work grid ---------- */
   var grid = document.getElementById('grid');
   var projects = window.PROJECTS || [];
+  var TYPE = { website: t('year.website', 'Website'), branding: t('filter.branding', 'Branding'), exploration: t('filter.exploration', 'Exploration') };
   function cardHTML(p) {
     return '<a class="card" href="project.html#' + p.id + '" data-type="' + p.type + '" data-iris>' +
       '<div class="card-media">' + window.coverHTML(p) + '</div>' +
       '<div class="card-body">' +
-        '<span class="card-kicker">' + p.year + ' · ' + (p.type === 'website' ? 'Website' : p.type) + '</span>' +
-        '<h3 class="card-title">' + p.title + (p.subtitle ? '<span>' + p.subtitle + '</span>' : '') + '</h3>' +
-        '<p class="card-sum">' + p.summary + '</p>' +
-        '<ul class="tags">' + p.tags.map(function (t) { return '<li>' + t + '</li>'; }).join('') + '</ul>' +
-        '<span class="card-go" aria-hidden="true">↗</span>' +
+        '<span class="card-kicker">' + p.year + ' · ' + (TYPE[p.type] || p.type) + '</span>' +
+        '<h3 class="card-title">' + tr(p.title) + (p.subtitle ? '<span>' + tr(p.subtitle) + '</span>' : '') + '</h3>' +
+        '<p class="card-sum">' + tr(p.summary) + '</p>' +
+        '<ul class="tags">' + tr(p.tags).map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul>' +
+        '<span class="card-go" aria-hidden="true"><span class="arr">↗</span></span>' +
       '</div></a>';
   }
   if (grid) {
     grid.innerHTML = projects.map(cardHTML).join('') +
-      '<div class="slot" data-type="all"><span><b>Next project</b><br>This space is waiting for yours.</span><a href="#contact">Start a project ↗</a></div>' +
-      '<p class="empty" hidden>Nothing here yet. Coming soon.</p>';
+      '<div class="slot" data-type="all"><span><b>' + t('slot.title', 'Next project') + '</b><br>' + t('slot.text', 'This space is waiting for yours.') + '</span>' +
+      '<a href="#contact">' + t('slot.cta', 'Start a project') + ' <span class="arr">↗</span></a></div>' +
+      '<p class="empty" hidden>' + t('empty', 'Nothing here yet. Coming soon.') + '</p>';
     var count = document.querySelector('[data-count="work"]');
     if (count) count.textContent = String(projects.length).padStart(2, '0');
 
@@ -85,40 +120,37 @@
     var id = (location.hash || '').slice(1);
     var p = projects.filter(function (x) { return x.id === id; })[0] || projects[0];
     if (p) {
-      document.title = p.title + ' · Nasaq Studio';
-      var draft = function (s) { return s.indexOf('Draft:') === 0 ? '<span class="draft">Draft</span> ' + s.slice(6) : s; };
+      document.title = tr(p.title) + ' · ' + t('foot.alt', 'Nasaq Studio').replace('NASAQ STUDIO', 'نسق ستوديو');
+      var draft = function (s) { return s.indexOf('Draft:') === 0 ? '<span class="draft">' + t('draft', 'Draft') + '</span> ' + s.slice(6) : s; };
       pageEl.innerHTML =
         '<section class="p-hero"><div class="wrap">' +
-          '<a class="p-back" href="index.html#work" data-iris>← All work</a>' +
-          '<div class="p-kicker">' + p.tags.join(' · ') + '</div>' +
-          '<h1 class="p-title"><span class="line solid" data-split>' + p.title + '</span>' +
-            (p.subtitle ? '<span class="line outline" data-split>' + p.subtitle + '</span>' : '') + '</h1>' +
+          '<a class="p-back" href="index.html#work" data-iris>' + t('proj.back', '← All work') + '</a>' +
+          '<div class="p-kicker">' + tr(p.tags).join(' · ') + '</div>' +
+          (p.logo ? '<img class="p-logo" src="' + p.logo + '" alt="' + tr(p.title) + ' logo">' : '') +
+          '<h1 class="p-title"><span class="line solid" data-split>' + tr(p.title) + '</span>' +
+            (p.subtitle ? '<span class="line outline sub" data-split>' + tr(p.subtitle) + '</span>' : '') + '</h1>' +
           '<dl class="p-meta">' +
-            '<div><dt>Client</dt><dd>' + p.title + '</dd></div>' +
-            '<div><dt>Year</dt><dd>' + p.year + '</dd></div>' +
-            '<div><dt>Role</dt><dd>' + p.role.join(', ') + '</dd></div>' +
-            '<div><dt>Live site</dt><dd>' + (p.url ? '<a href="' + p.url + '" target="_blank" rel="noopener">Visit ↗</a>' : 'Link coming') + '</dd></div>' +
+            '<div><dt>' + t('proj.client', 'Client') + '</dt><dd>' + tr(p.title) + '</dd></div>' +
+            '<div><dt>' + t('proj.year', 'Year') + '</dt><dd>' + p.year + '</dd></div>' +
+            '<div><dt>' + t('proj.role', 'Role') + '</dt><dd>' + tr(p.role).join(AR ? '، ' : ', ') + '</dd></div>' +
+            '<div><dt>' + t('proj.live', 'Live site') + '</dt><dd>' + (p.url ? '<a href="' + p.url + '" target="_blank" rel="noopener">' + t('proj.visit', 'Visit ↗') + '</a>' : t('proj.linkSoon', 'Link coming')) + '</dd></div>' +
           '</dl>' +
         '</div></section>' +
         '<div class="wrap"><div class="p-cover reveal">' + window.coverHTML(p) + '</div></div>' +
         '<section class="wrap p-text">' +
-          '<h2>Overview</h2><p class="reveal">' + draft(p.overview) + '</p>' +
-          '<h2>Challenge</h2><p class="reveal">' + draft(p.challenge) + '</p>' +
-          '<h2>Solution</h2><p class="reveal">' + draft(p.solution) + '</p>' +
+          '<h2>' + t('proj.overview', 'Overview') + '</h2><p class="reveal">' + draft(tr(p.overview)) + '</p>' +
+          '<h2>' + t('proj.challenge', 'Challenge') + '</h2><p class="reveal">' + draft(tr(p.challenge)) + '</p>' +
+          '<h2>' + t('proj.solution', 'Solution') + '</h2><p class="reveal">' + draft(tr(p.solution)) + '</p>' +
         '</section>' +
         (p.gallery.length ? '<section class="wrap p-gallery">' + p.gallery.map(function (src) {
-          return '<img class="reveal" src="' + src + '" alt="' + p.title + ' screenshot" loading="lazy">';
+          return '<img class="reveal" src="' + src + '" alt="' + tr(p.title) + '" loading="lazy">';
         }).join('') + '</section>' : '') +
         '<section class="p-next wrap">' +
-          (p.url ? '<a class="btn btn-red magnetic" href="' + p.url + '" target="_blank" rel="noopener">Visit the live site <span class="arr">↗</span></a>'
-                 : '<span class="pill">Live site link coming soon</span>') +
-          '<a class="btn btn-ink" href="index.html#contact" data-iris>Start a project like this <span class="arr">↗</span></a>' +
+          (p.url ? '<a class="btn btn-red magnetic" href="' + p.url + '" target="_blank" rel="noopener">' + t('proj.visitBig', 'Visit the live site') + ' <span class="arr">↗</span></a>'
+                 : '<span class="pill">' + t('proj.soonPill', 'Live site link coming soon') + '</span>') +
+          '<a class="btn btn-ink" href="index.html#contact" data-iris>' + t('proj.similar', 'Start a project like this') + ' <span class="arr">↗</span></a>' +
         '</section>';
-      pageEl.querySelectorAll('[data-split]').forEach(function (el) {
-        el.innerHTML = el.textContent.split(' ').map(function (w) {
-          return '<span class="w">' + w.split('').map(function (ch) { return '<span class="ch">' + ch + '</span>'; }).join('') + '</span>';
-        }).join(' ');
-      });
+      pageEl.querySelectorAll('[data-split]').forEach(splitInto);
     }
   }
 
@@ -143,7 +175,6 @@
   /* ---------- Unfinished links ---------- */
   document.querySelectorAll('[data-todo]').forEach(function (a) {
     a.addEventListener('click', function (e) { e.preventDefault(); });
-    a.title = 'Link coming soon';
   });
 
   /* ---------- Without GSAP or with reduced motion: show everything, done ---------- */
@@ -193,19 +224,22 @@
   if (heroReveal.length) intro.from(heroReveal, { y: 30, opacity: 0, duration: 1.1, stagger: .1, clearProps: 'transform,opacity' }, 1.15);
 
   // Close, then leave (links marked data-iris)
+  leave = function (e, then) {
+    iris.style.setProperty('--x', e && e.clientX ? e.clientX + 'px' : '50%');
+    iris.style.setProperty('--y', e && e.clientY ? e.clientY + 'px' : '50%');
+    iris.style.visibility = 'visible';
+    irisState.r = 150; setIris();
+    gsap.to(irisState, { r: 0, duration: .8, ease: 'power3.in', onUpdate: setIris, onComplete: then });
+  };
   document.querySelectorAll('[data-iris]').forEach(function (a) {
     a.addEventListener('click', function (e) {
       if (e.metaKey || e.ctrlKey || e.shiftKey) return;
       e.preventDefault();
       var href = a.getAttribute('href');
-      iris.style.setProperty('--x', e.clientX ? e.clientX + 'px' : '50%');
-      iris.style.setProperty('--y', e.clientY ? e.clientY + 'px' : '50%');
-      iris.style.visibility = 'visible';
-      irisState.r = 150; setIris();
-      gsap.to(irisState, { r: 0, duration: .8, ease: 'power3.in', onUpdate: setIris,
-        onComplete: function () { location.href = href; } });
+      leave(e, function () { location.href = href; });
     });
   });
+  if (langTab) intro.from(langTab, { xPercent: AR ? -100 : 100, duration: 1, clearProps: 'transform' }, 1.3);
   // Coming back with the browser's back button: make sure the page is visible
   window.addEventListener('pageshow', function (e) { if (e.persisted) { irisState.r = 150; setIris(); iris.style.visibility = 'hidden'; } });
 

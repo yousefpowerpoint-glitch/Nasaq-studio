@@ -1,33 +1,41 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Project · Nasaq Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..900,0..100,0..1&family=Lalezar&display=swap">
-<script>document.documentElement.classList.add('js-intro')</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..900,0..100,0..1&family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=Lalezar&display=swap">
+<script>
+  (function (d) {
+    var l; try { l = localStorage.getItem('nasaq-lang'); } catch (e) {}
+    if (l === 'ar') { d.lang = 'ar'; d.dir = 'rtl'; }
+    d.classList.add('js-intro');
+  })(document.documentElement);
+</script>
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
 <div class="grain" aria-hidden="true"></div>
 <div class="iris" aria-hidden="true"></div>
+<button class="lang-tab" id="lang-tab" type="button"></button>
 
 <main id="project"></main>
 
 <footer class="foot">
   <div class="wrap foot-in">
-    <span>© 2026 Nasaq Studio</span>
-    <span class="foot-ar" lang="ar" dir="rtl">نسق ستوديو</span>
-    <a href="index.html" data-iris>Home ↑</a>
+    <span data-i18n="foot.copy">© 2026 Nasaq Studio</span>
+    <span class="foot-alt" lang="ar" dir="rtl" data-i18n="foot.alt" data-alt-lang>نسق ستوديو</span>
+    <a href="index.html" data-iris data-i18n="foot.home">Home ↑</a>
   </div>
 </footer>
 
 <script src="assets/vendor/gsap.min.js"></script>
 <script src="assets/vendor/ScrollTrigger.min.js"></script>
 <script src="assets/vendor/lenis.min.js"></script>
+<script src="assets/i18n.js"></script>
 <script src="assets/projects.js"></script>
 <script src="assets/cover.js"></script>
 <script src="assets/main.js"></script>
