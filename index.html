@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nasaq Studio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Nasaq Studio designs and builds websites, interfaces and brands.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..900,0..100,0..1&family=Lalezar&display=swap">
+<script>document.documentElement.classList.add('js-intro')</script>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="iris" aria-hidden="true"></div>
+<div class="follower" aria-hidden="true"><span></span></div>
+
+<header class="nav">
+  <div class="nav-in">
+    <a class="logo" href="#top" aria-label="Nasaq Studio, home">
+      <span class="logo-ar" lang="ar" dir="rtl">نسق</span><span class="logo-en">NASAQ</span>
+    </a>
+    <span class="pill status"><i></i>Available for new projects</span>
+    <nav class="links" aria-label="Sections">
+      <a href="#work">Work <sup data-count="work">01</sup></a>
+      <a href="#services">Services <sup>04</sup></a>
+      <a href="#process">Process <sup>04</sup></a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="btn btn-ink" href="#contact">Let's talk <span class="arr">↗</span></a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="rays" aria-hidden="true"></div>
+    <div class="wrap hero-in">
+      <h1 class="hero-title" aria-label="Nasaq Studio">
+        <span class="line solid" data-split>NASAQ</span>
+        <span class="line outline" data-split>STUDIO</span>
+      </h1>
+
+      <div class="seal" aria-hidden="true">
+        <svg viewBox="0 0 200 200">
+          <defs><path id="ring" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs>
+          <circle cx="100" cy="100" r="98" class="seal-bg"/>
+          <circle cx="100" cy="100" r="62" class="seal-core"/>
+          <text class="seal-ring"><textPath href="#ring">DESIGN · WEB · BRANDING · MOTION · EST. 2026 ·</textPath></text>
+        </svg>
+        <span class="seal-ar" lang="ar" dir="rtl">نسق</span>
+      </div>
+
+      <div class="hero-foot">
+        <div class="hero-copy reveal">
+          <h2>Design &amp; web studio</h2>
+          <p>We design and build websites, interfaces and brands that are clear, quick and a pleasure to use.</p>
+          <a class="btn btn-ink" href="#work">See the work <span class="arr">↘</span></a>
+        </div>
+        <ul class="socials reveal" aria-label="Social links">
+          <li><a class="pill" href="#" data-todo>Instagram</a></li>
+          <li><a class="pill" href="#" data-todo>Behance</a></li>
+          <li><a class="pill" href="#" data-todo>Dribbble</a></li>
+          <li><a class="pill" href="#" data-todo>WhatsApp</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section class="sec work" id="work">
+    <div class="ghost" aria-hidden="true">PORTFOLIO</div>
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="sec-title" data-split-words>/Selected work</h2>
+        <div class="filters" role="tablist" aria-label="Filter projects">
+          <button class="chip is-on" data-filter="all" role="tab" aria-selected="true">All</button>
+          <button class="chip" data-filter="website" role="tab" aria-selected="false">Websites</button>
+          <button class="chip" data-filter="branding" role="tab" aria-selected="false">Branding</button>
+          <button class="chip" data-filter="exploration" role="tab" aria-selected="false">Exploration</button>
+        </div>
+      </div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="sec services" id="services">
+    <div class="wrap">
+      <h2 class="sec-title" data-split-words>/Services</h2>
+      <ul class="acc">
+        <li class="acc-item is-open">
+          <button class="acc-head" aria-expanded="true">
+            <span class="acc-name">UI/UX Design</span><span class="acc-icon" aria-hidden="true"></span>
+          </button>
+          <div class="acc-body"><div class="acc-inner">
+            <p>Clear, scalable interfaces for websites, dashboards and mobile apps.</p>
+            <div class="ticket t-mustard" aria-hidden="true"><b>UI</b><span>wireframes · prototypes · systems</span></div>
+          </div></div>
+        </li>
+        <li class="acc-item">
+          <button class="acc-head" aria-expanded="false">
+            <span class="acc-name">Web Design &amp; Dev</span><span class="acc-icon" aria-hidden="true"></span>
+          </button>
+          <div class="acc-body"><div class="acc-inner">
+            <p>Complete websites, designed and coded by us, fast on every phone.</p>
+            <div class="ticket t-red" aria-hidden="true"><b>WEB</b><span>landing pages · full sites · bookings</span></div>
+          </div></div>
+        </li>
+        <li class="acc-item">
+          <button class="acc-head" aria-expanded="false">
+            <span class="acc-name">Branding</span><span class="acc-icon" aria-hidden="true"></span>
+          </button>
+          <div class="acc-body"><div class="acc-inner">
+            <p>Logos, colour, type and the rules that keep a brand consistent.</p>
+            <div class="ticket t-blue" aria-hidden="true"><b>ID</b><span>logo · palette · guidelines</span></div>
+          </div></div>
+        </li>
+        <li class="acc-item">
+          <button class="acc-head" aria-expanded="false">
+            <span class="acc-name">Motion &amp; Animation</span><span class="acc-icon" aria-hidden="true"></span>
+          </button>
+          <div class="acc-body"><div class="acc-inner">
+            <p>Interface motion and short animations that make a product feel alive.</p>
+            <div class="ticket t-orange" aria-hidden="true"><b>FX</b><span>micro-interactions · reels · intros</span></div>
+          </div></div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="sec process" id="process">
+    <div class="ghost ghost-dark" aria-hidden="true">PROCESS</div>
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="sec-title" data-split-words>/Process</h2>
+        <span class="sec-note">How a project runs</span>
+      </div>
+      <ol class="rows">
+        <li class="row" data-follow="Listen">
+          <span class="row-n">01</span>
+          <span class="row-main"><b>Discover</b><em>We learn the business, the audience and the goal.</em></span>
+          <span class="row-when">Week 1</span>
+        </li>
+        <li class="row" data-follow="Sketch">
+          <span class="row-n">02</span>
+          <span class="row-main"><b>Design</b><em>Structure, look and motion, reviewed with you screen by screen.</em></span>
+          <span class="row-when">Weeks 2–3</span>
+        </li>
+        <li class="row" data-follow="Code">
+          <span class="row-n">03</span>
+          <span class="row-main"><b>Build</b><em>We code it, test it on real phones and make it fast.</em></span>
+          <span class="row-when">Weeks 3–5</span>
+        </li>
+        <li class="row" data-follow="Go!">
+          <span class="row-n">04</span>
+          <span class="row-main"><b>Launch</b><em>We publish, hand over, and stay on for changes.</em></span>
+          <span class="row-when">Week 6</span>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="sec contact" id="contact">
+    <div class="rays rays-soft" aria-hidden="true"></div>
+    <div class="wrap contact-in">
+      <span class="pill status"><i></i>Available for new projects</span>
+      <h2 class="cta-title" data-split-words>Have a project in mind?</h2>
+      <p class="cta-ar" lang="ar" dir="rtl">عندك مشروع؟ خلّنا نسوّيه سوا.</p>
+      <a class="btn btn-red magnetic" href="#" data-todo>Contact us <span class="arr">↗</span></a>
+      <ul class="socials socials-row" aria-label="Social links">
+        <li><a class="pill" href="#" data-todo>Instagram</a></li>
+        <li><a class="pill" href="#" data-todo>Behance</a></li>
+        <li><a class="pill" href="#" data-todo>Dribbble</a></li>
+        <li><a class="pill" href="#" data-todo>WhatsApp</a></li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <span>© 2026 Nasaq Studio</span>
+    <span class="foot-ar" lang="ar" dir="rtl">نسق ستوديو</span>
+    <a href="#top">Back to top ↑</a>
+  </div>
+</footer>
+
+<script src="assets/vendor/gsap.min.js"></script>
+<script src="assets/vendor/ScrollTrigger.min.js"></script>
+<script src="assets/vendor/lenis.min.js"></script>
+<script src="assets/projects.js"></script>
+<script src="assets/cover.js"></script>
+<script src="assets/main.js"></script>
+</body>
+</html>
