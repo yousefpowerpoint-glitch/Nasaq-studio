@@ -11,8 +11,9 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..900,0..100,0..1&family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=Lalezar&display=swap">
 <script>
   (function (d) {
+    // Arabic is the default; English only when the visitor picked it
     var l; try { l = localStorage.getItem('nasaq-lang'); } catch (e) {}
-    if (l === 'ar') { d.lang = 'ar'; d.dir = 'rtl'; }
+    if (l !== 'en') { d.lang = 'ar'; d.dir = 'rtl'; }
     d.classList.add('js-intro');
   })(document.documentElement);
 </script>
@@ -22,7 +23,15 @@
 
 <div class="grain" aria-hidden="true"></div>
 <div class="iris" aria-hidden="true"></div>
-<button class="lang-tab" id="lang-tab" type="button"></button>
+<header class="nav">
+  <div class="nav-in">
+    <a class="logo" href="index.html" data-iris aria-label="Nasaq Studio">
+      <span class="logo-ar" lang="ar" dir="rtl">نسق</span><span class="logo-en">NASAQ</span>
+    </a>
+    <span class="nav-gap"></span>
+    <button class="lang-btn" id="lang-tab" type="button"></button>
+  </div>
+</header>
 
 <main id="project"></main>
 

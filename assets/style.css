@@ -133,16 +133,44 @@ a.pill:hover { transform: translate(-2px, -2px); box-shadow: 3px 3px 0 var(--ink
 .chip.is-on { background: var(--ink); color: var(--cream); }
 
 /* ---------- Nav ---------- */
+/* Fixed and the same size in every state: scrolling only fades a backdrop in,
+   so nothing below it moves. */
 .nav {
-  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50;
-  padding-block: 14px;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  padding-top: calc(12px + env(safe-area-inset-top, 0px));
+  padding-left: max(10px, env(safe-area-inset-left, 0px));
+  padding-right: max(10px, env(safe-area-inset-right, 0px));
+  pointer-events: none;
 }
 .nav-in {
+  position: relative; isolation: isolate;
   display: flex; align-items: center; gap: 18px;
-  max-width: 1240px; margin-inline: auto;
-  padding-left: var(--gut); padding-right: var(--gut-r);
+  max-width: 1160px; margin-inline: auto;
+  padding: 8px 14px;
+  pointer-events: auto;
 }
-.nav-in > .btn { margin-inline-start: auto; padding: 9px 18px; font-size: 14px; box-shadow: 3px 3px 0 var(--ink); }
+.nav-in::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: rgba(241, 228, 198, .9);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  border: var(--edge); border-radius: 999px;
+  box-shadow: 3px 3px 0 var(--ink);
+  opacity: 0; transform: translateY(-8px) scale(.985);
+  transition: opacity .45s var(--ease), transform .6s var(--ease);
+  will-change: opacity, transform;
+}
+.nav.is-stuck .nav-in::before { opacity: 1; transform: none; }
+.lang-btn {
+  flex: none; display: grid; place-items: center;
+  min-width: 40px; height: 40px; padding: 0 10px;
+  border: var(--edge); border-radius: 999px; background: transparent;
+  font-weight: 800; font-size: 14px; letter-spacing: .04em; cursor: pointer;
+  transition: background .3s, color .3s;
+}
+.lang-btn:lang(ar) { font-family: var(--ar); font-size: 18px; font-weight: 400; letter-spacing: 0; }
+.nav-gap { margin-inline-start: auto; }
+.lang-btn:hover { background: var(--ink); color: var(--mustard); }
+.nav-in > .btn { margin-inline-start: 0; padding: 9px 18px; font-size: 14px; box-shadow: 3px 3px 0 var(--ink); }
 .logo {
   display: inline-flex; align-items: baseline; gap: 6px;
   text-decoration: none;
@@ -162,21 +190,14 @@ a.pill:hover { transform: translate(-2px, -2px); box-shadow: 3px 3px 0 var(--ink
 .links a:hover::after { transform: scaleX(1); transform-origin: left; }
 .links sup { font-size: 10px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .links + .btn { margin-inline-start: 0; }
-.nav.is-stuck .nav-in {
-  background: rgba(241, 228, 198, .86);
-  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
-  border: var(--edge); border-radius: 999px;
-  padding-block: 8px; max-width: 1100px;
-  margin-inline: max(12px, calc((100% - 1100px) / 2));
-  box-shadow: 3px 3px 0 var(--ink);
-}
 @media (max-width: 900px) {
   .links { display: none; }
+  .nav-in > .lang-btn { margin-inline-start: auto; }
   .nav .status { display: none; }
 }
 
 /* ---------- Hero ---------- */
-.hero { position: relative; overflow: hidden; padding-block: 30px 70px; }
+.hero { position: relative; overflow: hidden; padding-block: calc(100px + env(safe-area-inset-top, 0px)) 70px; }
 .rays {
   position: absolute; left: 50%; top: 46%;
   width: 260vmax; height: 260vmax; margin: -130vmax 0 0 -130vmax;
@@ -427,7 +448,7 @@ a.pill:hover { transform: translate(-2px, -2px); box-shadow: 3px 3px 0 var(--ink
 .foot a { text-decoration: none; }
 
 /* ---------- Project page ---------- */
-.p-hero { padding-block: 30px 40px; position: relative; overflow: hidden; }
+.p-hero { padding-block: calc(100px + env(safe-area-inset-top, 0px)) 40px; position: relative; overflow: hidden; }
 .p-back { display: inline-flex; gap: 8px; align-items: center; font-weight: 700; text-decoration: none; margin-bottom: 26px; }
 .p-kicker { font-size: 14px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--red); }
 .p-title {
@@ -553,24 +574,6 @@ a.pill:hover { transform: translate(-2px, -2px); box-shadow: 3px 3px 0 var(--ink
 }
 .social-links a:hover::after { transform: scaleX(1); }
 
-/* ---------- Header glitch (two frames) ---------- */
-.nav-in.is-glitch { animation: nav-glitch .18s steps(1, end) 1; }
-@keyframes nav-glitch {
-  0% {
-    translate: -5px 1px; skew: -8deg 0;
-    clip-path: inset(0 0 46% 0);
-    filter: drop-shadow(4px 0 0 var(--red)) drop-shadow(-4px 0 0 var(--blue));
-  }
-  50% {
-    translate: 6px -1px; skew: 7deg 0;
-    clip-path: inset(38% 0 0 0);
-    filter: drop-shadow(-4px 0 0 var(--red)) drop-shadow(4px 0 0 var(--blue));
-  }
-  100% { translate: 0 0; skew: 0 0; clip-path: none; filter: none; }
-}
-.logo { position: relative; }
-.nav-in.is-glitch .logo { translate: 3px 0; }
-
 /* ---------- Project brief (a printed order form) ---------- */
 .brief {
   width: 100%; max-width: 760px;
@@ -665,24 +668,6 @@ html.has-cursor input[type="text"] { cursor: text !important; }
 .cursor.is-label span { width: 76px; height: 76px; background: var(--red); color: var(--cream); mix-blend-mode: normal; border: 2.5px solid var(--ink); }
 .cursor.is-hidden span { opacity: 0; }
 html[lang="ar"] .cursor span { font-family: var(--body); font-size: 15px; }
-
-/* ---------- Language tab (side edge) ---------- */
-.lang-tab {
-  position: fixed; z-index: 70; top: 50%;
-  inset-inline-end: 0;
-  translate: 0 -50%;
-  padding: 12px 14px 12px 16px;
-  padding-inline-end: calc(12px + env(safe-area-inset-right, 0px));
-  background: var(--ink); color: var(--mustard);
-  border: var(--edge); border-inline-end: 0;
-  border-start-start-radius: 14px; border-end-start-radius: 14px;
-  box-shadow: -3px 3px 0 var(--red);
-  font-family: var(--ar); font-size: 19px; line-height: 1; cursor: pointer;
-  transition: padding .5s var(--ease), background .3s;
-}
-.lang-tab:lang(en) { font-family: var(--body); font-size: 14px; font-weight: 800; letter-spacing: .04em; }
-.lang-tab:hover { padding-inline-start: 24px; background: var(--red); color: var(--cream); }
-[dir="rtl"] .lang-tab { padding-inline-end: calc(12px + env(safe-area-inset-left, 0px)); box-shadow: 3px 3px 0 var(--red); }
 
 /* ---------- Arabic ---------- */
 html[lang="ar"] {

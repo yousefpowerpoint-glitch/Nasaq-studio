@@ -43,7 +43,7 @@
   var langTab = document.getElementById('lang-tab');
   var leave = null; // set below once the iris exists; closes the iris, then runs a callback
   if (langTab) {
-    langTab.textContent = AR ? 'English' : 'عربي';
+    langTab.textContent = AR ? 'EN' : 'عربي';
     langTab.lang = AR ? 'en' : 'ar';
     langTab.setAttribute('aria-label', AR ? 'Switch to English' : 'التبديل إلى العربية');
     langTab.addEventListener('click', function (e) {
@@ -278,24 +278,12 @@
 
   /* ---------- Sticky nav state ---------- */
   var nav = document.querySelector('.nav');
-  var navIn = document.querySelector('.nav-in'), lastY = window.scrollY;
-  function glitch() {
-    if (!navIn || reduce) return;
-    navIn.classList.remove('is-glitch'); void navIn.offsetWidth;
-    navIn.classList.add('is-glitch');
-    setTimeout(function () { navIn.classList.remove('is-glitch'); }, 200);
-  }
-  // The header glitches once: the moment it turns into the compact bar on the way down.
+  // Backdrop on/off with a little hysteresis so it never flickers at the threshold
   function onScroll() {
-    var y = window.scrollY;
-    if (nav) {
-      var stuck = y > 40;
-      if (stuck !== nav.classList.contains('is-stuck')) {
-        nav.classList.toggle('is-stuck', stuck);
-        if (stuck && y > lastY) glitch();
-      }
-    }
-    lastY = y;
+    if (!nav) return;
+    var y = window.scrollY, stuck = nav.classList.contains('is-stuck');
+    if (!stuck && y > 60) nav.classList.add('is-stuck');
+    else if (stuck && y < 20) nav.classList.remove('is-stuck');
   }
   window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
@@ -366,7 +354,6 @@
       leave(e, function () { location.href = href; });
     });
   });
-  if (langTab) intro.from(langTab, { xPercent: AR ? -100 : 100, duration: 1, clearProps: 'transform' }, 1.3);
   // Coming back with the browser's back button: make sure the page is visible
   window.addEventListener('pageshow', function (e) { if (e.persisted) { irisState.r = 150; setIris(); iris.style.visibility = 'hidden'; } });
 

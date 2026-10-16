@@ -29,111 +29,139 @@
 
   var MODELS = {};
 
-  /* ---------- MOG: a padel court with a floating racket and a bouncing ball ---------- */
+  /* ---------- MOG: a padel court that morphs into a bowling lane and back, every 5 s ---------- */
   MODELS.padel = function (THREE, root, ramp, colors) {
-    var COURT = new THREE.Color(colors && colors.court || '#2F6E8F').getHex();
-    var RACKET = new THREE.Color(colors && colors.racket || '#D63A2B').getHex();
-    var court = new THREE.Group();
-    root.add(court);
+    var COURT = new THREE.Color(colors && colors.court || '#2F6E8F');
+    var WOOD = new THREE.Color(colors && colors.lane || '#C98A4B');
+    var BALL2 = new THREE.Color(colors && colors.racket || '#7A4FE0').getHex();
+    root.scale.setScalar(0.78);
 
-    // Base and playing surface (padel court is 10 × 20 m; scaled to 5 × 10)
+    // Shared base: one box that stretches from court (6 × 11) to lane (2.6 × 12.4)
+    var baseG = new THREE.Group(); root.add(baseG);
     var baseGeo = new THREE.BoxGeometry(6, 0.3, 11);
-    var base = new THREE.Mesh(baseGeo, new THREE.MeshToonMaterial({ color: CREAM, gradientMap: ramp }));
-    base.position.y = -0.15; court.add(base, inkEdges(THREE, baseGeo)); court.children[1].position.y = -0.15;
-    var surfGeo = new THREE.BoxGeometry(5, 0.06, 10);
-    var surf = new THREE.Mesh(surfGeo, new THREE.MeshToonMaterial({ color: COURT, gradientMap: ramp }));
-    surf.position.y = 0.03; court.add(surf);
+    baseG.add(new THREE.Mesh(baseGeo, new THREE.MeshToonMaterial({ color: CREAM, gradientMap: ramp })), inkEdges(THREE, baseGeo));
+    baseG.position.y = -0.15;
+    var surfMat = new THREE.MeshToonMaterial({ color: COURT.clone(), gradientMap: ramp });
+    var surf = new THREE.Mesh(new THREE.BoxGeometry(5, 0.06, 10), surfMat);
+    surf.position.y = 0.03; root.add(surf);
 
-    // Court lines
+    /* Padel parts */
+    var padel = new THREE.Group(); root.add(padel);
     var lineMat = new THREE.MeshBasicMaterial({ color: CREAM });
     function line(w, d, x, z) {
       var m = new THREE.Mesh(new THREE.BoxGeometry(w, 0.02, d), lineMat);
-      m.position.set(x, 0.07, z); court.add(m);
+      m.position.set(x, 0.07, z); padel.add(m);
     }
     line(0.06, 10, -2.47, 0); line(0.06, 10, 2.47, 0);
     line(5, 0.06, 0, -4.97); line(5, 0.06, 0, 4.97);
-    line(5, 0.06, 0, -3.47); line(5, 0.06, 0, 3.47);   // service lines (6.95 m from net)
-    line(0.06, 6.94, 0, 0);                             // centre service line
-
-    // Net with posts
-    var netGeo = new THREE.BoxGeometry(5.2, 0.45, 0.04);
-    var net = new THREE.Mesh(netGeo, new THREE.MeshBasicMaterial({ color: INK, transparent: true, opacity: 0.55 }));
-    net.position.y = 0.3; court.add(net);
+    line(5, 0.06, 0, -3.47); line(5, 0.06, 0, 3.47);
+    line(0.06, 6.94, 0, 0);
+    var net = new THREE.Mesh(new THREE.BoxGeometry(5.2, 0.45, 0.04), new THREE.MeshBasicMaterial({ color: INK, transparent: true, opacity: 0.55 }));
+    net.position.y = 0.3; padel.add(net);
     var tape = new THREE.Mesh(new THREE.BoxGeometry(5.2, 0.05, 0.06), new THREE.MeshBasicMaterial({ color: CREAM }));
-    tape.position.y = 0.54; court.add(tape);
+    tape.position.y = 0.54; padel.add(tape);
     [-2.65, 2.65].forEach(function (x) {
       var post = outlined(THREE, new THREE.CylinderGeometry(0.06, 0.06, 0.6, 12), INK, ramp, 0.0);
-      post.position.set(x, 0.3, 0); court.add(post);
+      post.position.set(x, 0.3, 0); padel.add(post);
     });
-
-    // Glass back walls (the thing that makes padel padel) and side fences
     function glass(w, h, x, z, ry) {
       var geo = new THREE.BoxGeometry(w, h, 0.05);
-      var pane = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: 0xBFE3EE, transparent: true, opacity: 0.22, depthWrite: false }));
-      var edges = inkEdges(THREE, geo, 0.9);
-      var g = new THREE.Group(); g.add(pane, edges);
+      var g = new THREE.Group();
+      g.add(new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: 0xBFE3EE, transparent: true, opacity: 0.22, depthWrite: false })), inkEdges(THREE, geo, 0.9));
       g.position.set(x, h / 2 + 0.06, z); g.rotation.y = ry || 0;
-      court.add(g);
+      padel.add(g);
     }
-    glass(5, 1.5, 0, -5);  glass(5, 1.5, 0, 5);
+    glass(5, 1.5, 0, -5); glass(5, 1.5, 0, 5);
     glass(2, 1.5, -2.5, -4, Math.PI / 2); glass(2, 1.5, 2.5, -4, Math.PI / 2);
     glass(2, 1.5, -2.5, 4, Math.PI / 2);  glass(2, 1.5, 2.5, 4, Math.PI / 2);
-    // Mesh fence on the sides between the glass
     var fenceGeo = new THREE.PlaneGeometry(6, 1.2, 12, 3);
     [-2.5, 2.5].forEach(function (x) {
-      var f = new THREE.LineSegments(new THREE.WireframeGeometry(fenceGeo),
-        new THREE.LineBasicMaterial({ color: INK, transparent: true, opacity: 0.35 }));
-      f.rotation.y = Math.PI / 2; f.position.set(x, 0.66, 0); court.add(f);
+      var f = new THREE.LineSegments(new THREE.WireframeGeometry(fenceGeo), new THREE.LineBasicMaterial({ color: INK, transparent: true, opacity: 0.35 }));
+      f.rotation.y = Math.PI / 2; f.position.set(x, 0.66, 0); padel.add(f);
     });
+    var pBall = outlined(THREE, new THREE.SphereGeometry(0.22, 24, 16), MUSTARD, ramp, 0.08);
+    padel.add(pBall);
+    var shadow = new THREE.Mesh(new THREE.CircleGeometry(0.24, 24), new THREE.MeshBasicMaterial({ color: INK, transparent: true, opacity: 0.3, depthWrite: false }));
+    shadow.rotation.x = -Math.PI / 2; shadow.position.y = 0.09; padel.add(shadow);
 
-    // Racket: solid perforated head + handle
-    var racket = new THREE.Group();
-    var s = new THREE.Shape();
-    s.moveTo(0, -1.25);
-    s.bezierCurveTo(0.55, -1.2, 0.95, -0.5, 0.95, 0.2);
-    s.bezierCurveTo(0.95, 0.85, 0.5, 1.2, 0, 1.2);
-    s.bezierCurveTo(-0.5, 1.2, -0.95, 0.85, -0.95, 0.2);
-    s.bezierCurveTo(-0.95, -0.5, -0.55, -1.2, 0, -1.25);
-    for (var r = 0; r < 6; r++) for (var c = 0; c < 6; c++) {
-      var hx = -0.55 + c * 0.22 + (r % 2 ? 0.11 : 0), hy = -0.55 + r * 0.25;
-      if (hx * hx / 0.5 + (hy - 0.15) * (hy - 0.15) / 0.75 > 1) continue;
-      var h = new THREE.Path(); h.absarc(hx, hy, 0.06, 0, Math.PI * 2, false); s.holes.push(h);
+    /* Bowling parts */
+    var bowl = new THREE.Group(); root.add(bowl);
+    var gutterMat = new THREE.MeshToonMaterial({ color: 0x3A2F27, gradientMap: ramp });
+    [-1.15, 1.15].forEach(function (x) {
+      var g = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.08, 11.6), gutterMat);
+      g.position.set(x, 0.06, 0); bowl.add(g);
+    });
+    // Aiming arrows
+    var arrowShape = new THREE.Shape(); arrowShape.moveTo(0, 0.18); arrowShape.lineTo(0.09, -0.12); arrowShape.lineTo(-0.09, -0.12); arrowShape.closePath();
+    var arrowGeo = new THREE.ShapeGeometry(arrowShape);
+    for (var i = -3; i <= 3; i++) {
+      var a = new THREE.Mesh(arrowGeo, new THREE.MeshBasicMaterial({ color: INK }));
+      a.rotation.x = -Math.PI / 2; a.position.set(i * 0.26, 0.075, 1.2 + Math.abs(i) * 0.22); bowl.add(a);
     }
-    var headGeo = new THREE.ExtrudeGeometry(s, { depth: 0.18, bevelEnabled: true, bevelThickness: 0.05, bevelSize: 0.05, bevelSegments: 2, curveSegments: 18 });
-    headGeo.center();
-    var head = outlined(THREE, headGeo, RACKET, ramp, 0.035);
-    racket.add(head);
-    var handle = outlined(THREE, new THREE.CylinderGeometry(0.12, 0.14, 0.9, 16), INK, ramp, 0.06);
-    handle.position.y = -1.65; racket.add(handle);
-    var grip = outlined(THREE, new THREE.CylinderGeometry(0.15, 0.15, 0.12, 16), MUSTARD, ramp, 0.05);
-    grip.position.y = -2.08; racket.add(grip);
-    var throat = outlined(THREE, new THREE.BoxGeometry(0.5, 0.3, 0.2), RACKET, ramp, 0.05);
-    throat.position.y = -1.25; racket.add(throat);
-    racket.scale.setScalar(0.9);
-    racket.position.set(1.4, 2.6, 1.2);
-    root.add(racket);
+    var foul = new THREE.Mesh(new THREE.BoxGeometry(2.0, 0.02, 0.05), new THREE.MeshBasicMaterial({ color: RED }));
+    foul.position.set(0, 0.075, 4.6); bowl.add(foul);
+    // Pins: lathe profile, white with a red neck stripe
+    var prof = [[0, 0], [0.11, 0], [0.16, 0.18], [0.17, 0.32], [0.12, 0.5], [0.07, 0.62], [0.08, 0.72], [0.09, 0.8], [0.06, 0.88], [0, 0.9]]
+      .map(function (p) { return new THREE.Vector2(p[0], p[1]); });
+    var pinGeo = new THREE.LatheGeometry(prof, 16);
+    var stripeGeo = new THREE.CylinderGeometry(0.075, 0.075, 0.05, 16);
+    var pins = [];
+    [[0, 0], [-1, 1], [1, 1], [-2, 2], [0, 2], [2, 2], [-3, 3], [-1, 3], [1, 3], [3, 3]].forEach(function (p) {
+      var pin = new THREE.Group();
+      pin.add(outlined(THREE, pinGeo, CREAM, ramp, 0.07));
+      var stripe = new THREE.Mesh(stripeGeo, new THREE.MeshBasicMaterial({ color: RED }));
+      stripe.position.y = 0.66; pin.add(stripe);
+      pin.position.set(p[0] * 0.19, 0.07, -4.3 - p[1] * 0.3);
+      pin.userData = { x: pin.position.x, z: pin.position.z, dir: (Math.random() - 0.5) * 2 };
+      pin.scale.setScalar(1.3);
+      bowl.add(pin); pins.push(pin);
+    });
+    var bBall = outlined(THREE, new THREE.SphereGeometry(0.3, 28, 18), BALL2, ramp, 0.06);
+    [[0.1, 0.12], [-0.1, 0.12], [0, -0.05]].forEach(function (h) {
+      var hole = new THREE.Mesh(new THREE.CircleGeometry(0.045, 12), new THREE.MeshBasicMaterial({ color: INK }));
+      hole.position.set(h[0], h[1], 0.301); bBall.add(hole);
+    });
+    bowl.add(bBall);
 
-    // Ball and its shadow
-    var ball = outlined(THREE, new THREE.SphereGeometry(0.22, 24, 16), MUSTARD, ramp, 0.08);
-    root.add(ball);
-    var shadow = new THREE.Mesh(new THREE.CircleGeometry(0.24, 24),
-      new THREE.MeshBasicMaterial({ color: INK, transparent: true, opacity: 0.3, depthWrite: false }));
-    shadow.rotation.x = -Math.PI / 2; shadow.position.y = 0.09; root.add(shadow);
+    var ease = function (x) { x = Math.max(0, Math.min(1, x)); return x * x * (3 - 2 * x); };
 
     return function update(t) {
-      // Racket: slow float and swing
-      racket.position.y = 2.6 + Math.sin(t * 1.2) * 0.18;
-      racket.rotation.set(-0.35 + Math.sin(t * 0.9) * 0.12, t * 0.5, 0.5 + Math.sin(t * 1.1) * 0.1);
-      // Ball: rallies across the net, bouncing once on each side
+      var local = t % 10;
+      // 0 = padel court, 1 = bowling lane
+      var m = local < 5 ? ease((local - 4.2) / 0.8) : 1 - ease((local - 9.2) / 0.8);
+
+      baseG.scale.set(1 + (2.6 / 6 - 1) * m, 1, 1 + (12.4 / 11 - 1) * m);
+      surf.scale.set(1 + (2.0 / 5 - 1) * m, 1, 1 + (11.6 / 10 - 1) * m);
+      surfMat.color.copy(COURT).lerp(WOOD, m);
+
+      // Padel parts sink first, bowling parts pop up after
+      var pIn = ease(1 - m * 2), bIn = ease(m * 2 - 1);
+      padel.scale.set(1, Math.max(0.0001, pIn), 1); padel.visible = pIn > 0.001;
+      bowl.scale.set(1, Math.max(0.0001, bIn), 1); bowl.visible = bIn > 0.001;
+      pins.forEach(function (pin, i) { var s = ease(m * 2 - 1 - i * 0.03); pin.scale.setScalar(1.3 * Math.max(0.0001, s)); });
+
+      // Padel rally
       var cycle = (t * 0.45) % 2, dir = cycle < 1 ? 1 : -1, k = cycle % 1;
       var z = dir * (-3.6 + k * 7.2);
       var hop = k < 0.5 ? k / 0.5 : (k - 0.5) / 0.5;
       var y = 0.3 + Math.sin(hop * Math.PI) * (k < 0.5 ? 1.7 : 1.1);
-      ball.position.set(Math.sin(t * 0.7) * 1.2, y, z);
-      ball.rotation.x += 0.08 * dir;
-      shadow.position.set(ball.position.x, 0.09, z);
+      pBall.position.set(Math.sin(t * 0.7) * 1.2, y, z);
+      pBall.rotation.x += 0.08 * dir;
+      shadow.position.set(pBall.position.x, 0.09, z);
       var sc = 1 - Math.min(0.6, (y - 0.3) / 3);
       shadow.scale.setScalar(sc); shadow.material.opacity = 0.32 * sc;
+
+      // Bowling: roll, strike, pins fall
+      var r = (local - 5.4) / 1.6;                 // 0 → 1 while rolling
+      var roll = Math.max(0, Math.min(1, r));
+      bBall.position.set(Math.sin(roll * Math.PI) * 0.25, 0.37, 4.2 - roll * 8.3);
+      bBall.rotation.x = -roll * 14;
+      var hit = Math.max(0, Math.min(1, (local - 6.9) / 0.5));
+      pins.forEach(function (pin) {
+        var d = pin.userData, f = ease(hit);
+        pin.rotation.set(-f * 1.45, 0, d.dir * f * 0.9);
+        pin.position.set(d.x + d.dir * f * 0.35, 0.07, d.z - f * 0.45);
+      });
     };
   };
 
@@ -152,7 +180,7 @@
 
     var scene = new THREE.Scene();
     var camera = new THREE.PerspectiveCamera(32, 1, 0.1, 100);
-    camera.position.set(0, 8, 12.5);
+    camera.position.set(0, 8.5, 13.5);
     camera.lookAt(0, 0.6, 0);
     scene.add(new THREE.HemisphereLight(0xFFF4DC, 0x6E5E4E, 0.75));
     var sun = new THREE.DirectionalLight(0xFFFFFF, 0.8); sun.position.set(4, 10, 6); scene.add(sun);
@@ -181,8 +209,8 @@
       renderer.setSize(w, h, false);
       camera.aspect = w / h;
       // Pull back on tall/narrow boxes so the whole court fits
-      camera.position.z = w / h < 1.2 ? 16 : 12.5;
-      camera.position.y = w / h < 1.2 ? 10 : 8;
+      camera.position.z = w / h < 1.2 ? 17 : 13.5;
+      camera.position.y = w / h < 1.2 ? 10.5 : 8.5;
       camera.lookAt(0, 0.6, 0);
       camera.updateProjectionMatrix();
     }

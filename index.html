@@ -7,7 +7,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Nasaq Studio designs and builds websites, interfaces and brands.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Nasaq Studio · نسق استديو">
+<meta property="og:title" content="نسق استديو · Nasaq Studio">
 <meta property="og:description" content="Design &amp; web studio. Websites, interfaces and brands.">
 <meta property="og:image" content="assets/og.png">
 <meta property="og:image:width" content="1200">
@@ -20,8 +20,9 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..900,0..100,0..1&family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=Lalezar&display=swap">
 <script>
   (function (d) {
+    // Arabic is the default; English only when the visitor picked it
     var l; try { l = localStorage.getItem('nasaq-lang'); } catch (e) {}
-    if (l === 'ar') { d.lang = 'ar'; d.dir = 'rtl'; }
+    if (l !== 'en') { d.lang = 'ar'; d.dir = 'rtl'; }
     d.classList.add('js-intro');
   })(document.documentElement);
 </script>
@@ -32,7 +33,6 @@
 <div class="grain" aria-hidden="true"></div>
 <div class="iris" aria-hidden="true"></div>
 <div class="follower" aria-hidden="true"><span></span></div>
-<button class="lang-tab" id="lang-tab" type="button"></button>
 
 <header class="nav">
   <div class="nav-in">
@@ -45,6 +45,7 @@
       <a href="#process"><span data-i18n="nav.process">Process</span> <sup>04</sup></a>
       <a href="#contact" data-i18n="nav.contact">Contact</a>
     </nav>
+    <button class="lang-btn" id="lang-tab" type="button"></button>
     <a class="btn btn-ink" href="#contact"><span data-i18n="nav.talk">Let's talk</span> <span class="arr">↗</span></a>
   </div>
 </header>
@@ -109,8 +110,8 @@
         <figcaption><b data-i18n="reel.title">Showreel</b> <span data-i18n="reel.soon">Motion piece coming soon</span></figcaption>
       </figure>
       <ul class="acc">
-        <li class="acc-item is-open">
-          <button class="acc-head" aria-expanded="true">
+        <li class="acc-item">
+          <button class="acc-head" aria-expanded="false">
             <span class="acc-name" data-i18n="s1.name">UI/UX Design</span><span class="acc-icon" aria-hidden="true"></span>
           </button>
           <div class="acc-body"><div class="acc-inner">
