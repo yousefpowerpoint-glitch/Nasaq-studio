@@ -672,6 +672,16 @@ html.has-cursor input[type="text"] { cursor: text !important; }
 .cursor.is-hidden span { opacity: 0; }
 html[lang="ar"] .cursor span { font-family: var(--body); font-size: 15px; }
 
+/* ---------- Noon (mascot) ---------- */
+.noon { display: block; width: 100%; height: auto; overflow: visible; }
+.noon .noon-eye { transform-box: fill-box; transform-origin: center; animation: noon-blink 4.2s infinite; }
+.noon .noon-dot { animation: noon-bob 1.8s ease-in-out infinite; }
+.noon .noon-wave { transform-box: view-box; transform-origin: 145px 200px; animation: noon-wave .9s ease-in-out infinite alternate; }
+.noon-sleep .noon-dot { animation-duration: 3.2s; }
+@keyframes noon-blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.08); } }
+@keyframes noon-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+@keyframes noon-wave { from { transform: rotate(-10deg); } to { transform: rotate(12deg); } }
+
 /* ---------- Arabic ---------- */
 html[lang="ar"] {
   --display: "Lalezar", "IBM Plex Sans Arabic", "Segoe UI", sans-serif;

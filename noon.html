@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>نون · نسق استديو</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..900,0..100,0..1&family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=Lalezar&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  /* Character sheet: one page that shows how Noon is built and used */
+  .sheet { padding-block: calc(96px + env(safe-area-inset-top, 0px)) 80px; }
+  .sheet-hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 360px); gap: clamp(24px, 5vw, 70px); align-items: center; }
+  .sheet-hero h1 { margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(90px, 18vw, 220px); line-height: .95; color: var(--ink); text-shadow: .04em .04em 0 var(--red); }
+  .sheet-hero .en { font-family: "Fraunces", Georgia, serif; font-weight: 900; letter-spacing: .12em; color: var(--red); margin: 6px 0 16px; }
+  .sheet-hero p { max-width: 46ch; font-size: 19px; color: var(--ink-2); margin: 0 0 10px; }
+  .stage { position: relative; aspect-ratio: 260 / 316; max-width: 100%; }
+  .stage::before { content: ""; position: absolute; inset: 8% -6% 4%; z-index: -1; border-radius: 50%;
+    background: repeating-conic-gradient(from 0deg, var(--paper-2) 0deg 6deg, transparent 6deg 15deg); opacity: .8;
+    -webkit-mask: radial-gradient(circle, #000 40%, transparent 70%); mask: radial-gradient(circle, #000 40%, transparent 70%); }
+  .block { margin-top: clamp(60px, 9vw, 110px); }
+  .block h2 { margin: 0 0 6px; font-family: var(--display); font-weight: 400; font-size: clamp(32px, 5vw, 54px); line-height: 1.2; }
+  .block > p { margin: 0 0 26px; color: var(--ink-2); max-width: 60ch; }
+  .build { display: flex; align-items: center; justify-content: center; gap: clamp(14px, 4vw, 50px); flex-wrap: wrap;
+    border: var(--edge); border-radius: 20px; background: var(--cream); padding: 24px; box-shadow: var(--shadow); }
+  [dir="rtl"] .build { box-shadow: -5px 5px 0 var(--ink); }
+  .build .letter { font-family: "Lalezar", serif; font-size: clamp(110px, 16vw, 190px); line-height: 1.1; }
+  .build .arrow { font-size: 40px; font-weight: 800; color: var(--red); }
+  .build .head { width: clamp(120px, 18vw, 190px); }
+  .build figcaption { text-align: center; font-weight: 700; color: var(--muted); font-size: 14px; }
+  .build figure { margin: 0; display: grid; justify-items: center; gap: 6px; }
+  .poses { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 18px; }
+  .pose { margin: 0; border: var(--edge); border-radius: 18px; background: var(--cream); padding: 14px 10px 16px; display: grid; gap: 8px; text-align: center; }
+  .pose b { font-family: var(--display); font-weight: 400; font-size: 24px; }
+  .pose span { font-size: 14px; color: var(--muted); line-height: 1.5; }
+  .faces { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
+  .faces figure { margin: 0; text-align: center; font-weight: 700; color: var(--ink-2); }
+  .faces svg { max-width: 170px; margin-inline: auto; }
+  .swatches { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; }
+  .sw { border: var(--edge); border-radius: 14px; overflow: hidden; background: var(--cream); }
+  .sw i { display: block; height: 70px; border-bottom: var(--edge); }
+  .sw div { padding: 8px 10px; font-size: 14px; }
+  .sw code { display: block; direction: ltr; text-align: right; color: var(--muted); font-size: 13px; }
+  .uses { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; align-items: start; }
+  .card-mock { aspect-ratio: 85.6 / 54; max-width: 100%; border-radius: 14px; border: var(--edge); overflow: hidden; position: relative; box-shadow: -5px 5px 0 var(--ink); }
+  .card-mock.front { background: var(--ink); color: var(--cream); }
+  .card-mock.back { background: var(--cream); }
+  .card-mock.front .noon-dot circle:first-child { fill: var(--cream); }  /* on dark grounds the dot turns cream */
+  .card-mock.front .noon-dot circle + circle { fill: var(--ink); opacity: .25; }
+  .card-mock.front .who { background: radial-gradient(circle at 50% 62%, var(--mustard) 0 46%, transparent 47%); }
+  .card-mock .who { position: absolute; inset-inline-start: 6%; top: 50%; translate: 0 -50%; height: 92%; aspect-ratio: 260/316; }
+  .card-mock .txt { position: absolute; inset-inline-end: 7%; top: 50%; translate: 0 -50%; text-align: left; }
+  .card-mock .txt b { display: block; font-family: "Lalezar", serif; font-weight: 400; font-size: clamp(28px, 4vw, 44px); line-height: 1.1; color: var(--mustard); }
+  .card-mock .txt small { display: block; font-family: "Fraunces", Georgia, serif; font-weight: 900; letter-spacing: .14em; font-size: clamp(10px, 1.2vw, 13px); }
+  .card-mock.back .txt b { color: var(--ink); }
+  .card-mock.back .txt small { color: var(--red); }
+  .uses figcaption { margin-top: 10px; font-weight: 700; color: var(--muted); font-size: 14px; }
+  .uses figure { margin: 0; }
+  .list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .list li { display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: baseline; font-size: 17px; }
+  .list li::before { content: "●"; color: var(--red); font-size: 13px; }
+  .list.dont li::before { content: "✕"; color: var(--ink); font-weight: 800; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+  .two h3 { margin: 0 0 12px; font-family: var(--display); font-weight: 400; font-size: 26px; }
+  .motion { counter-reset: m; }
+  @media (max-width: 900px) {
+    .poses { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .faces, .swatches { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .uses, .two, .sheet-hero { grid-template-columns: 1fr; }
+    .stage { max-width: 320px; margin-inline: auto; }
+  }
+  @media (max-width: 520px) { .poses { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="nav is-stuck">
+  <div class="nav-in">
+    <a class="btn btn-ink" href="index.html">الموقع <span class="arr">↗</span></a>
+    <a class="logo" href="index.html" aria-label="نسق استديو"><span class="logo-ar">نسق</span><span class="logo-en">NASAQ</span></a>
+  </div>
+</header>
+
+<main class="wrap sheet">
+  <section class="sheet-hero">
+    <div>
+      <h1>نون</h1>
+      <div class="en">NOON · THE NASAQ MASCOT</div>
+      <p>شخصية نسق استديو. رأسه حرف النون، أول حرف من «نسق»، والنقطة فوقه تطفو وتتنطط مثل الكرة.</p>
+      <p>مرسوم بأسلوب كرتون الثلاثينات: خط حبر أسود، عيون «فطيرة»، يدين وأرجل مطاطية، وقفازات بيضاء.</p>
+    </div>
+    <div class="stage" id="hero-noon"></div>
+  </section>
+
+  <section class="block">
+    <h2>من الحرف إلى الشخصية</h2>
+    <p>نفس فكرة كبهد اللي رأسه كوب، بس عندنا الرأس هو الحرف نفسه. الوعاء يصير الوجه، والنقطة تصير الكرة اللي فوق رأسه.</p>
+    <div class="build">
+      <figure><span class="letter">ن</span><figcaption>الحرف</figcaption></figure>
+      <span class="arrow">←</span>
+      <figure><div class="head" id="build-head"></div><figcaption>الرأس</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>الوضعيات</h2>
+    <p>كل وضعية لها مكان في الموقع.</p>
+    <div class="poses" id="poses"></div>
+  </section>
+
+  <section class="block">
+    <h2>التعابير</h2>
+    <p>العيون والفم يتغيرون، والباقي ثابت.</p>
+    <div class="faces" id="faces"></div>
+  </section>
+
+  <section class="block">
+    <h2>الألوان</h2>
+    <p>نفس ألوان الموقع، ما في لون جديد.</p>
+    <div class="swatches">
+      <div class="sw"><i style="background:#F6EBD2"></i><div>الرأس والجسم<code>#F6EBD2</code></div></div>
+      <div class="sw"><i style="background:#1C1612"></i><div>الحبر والنقطة<code>#1C1612</code></div></div>
+      <div class="sw"><i style="background:#D63A2B"></i><div>الشورت والخدود<code>#D63A2B</code></div></div>
+      <div class="sw"><i style="background:#FFFBF0"></i><div>القفازات<code>#FFFBF0</code></div></div>
+      <div class="sw"><i style="background:#F0BE2C"></i><div>القلم واللمسات<code>#F0BE2C</code></div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>على البطاقة</h2>
+    <p>تصور مبدئي لوجهي البطاقة.</p>
+    <div class="uses">
+      <figure>
+        <div class="card-mock front"><div class="who" id="card-front"></div><div class="txt"><b>نسق</b><small>NASAQ STUDIO</small></div></div>
+        <figcaption>الوجه: نون يرسم بالقلم على خلفية الحبر</figcaption>
+      </figure>
+      <figure>
+        <div class="card-mock back"><div class="who" id="card-back"></div><div class="txt"><b>تصميم وتطوير</b><small>DESIGN · WEB · BRANDING</small></div></div>
+        <figcaption>الظهر: نون يرفع إبهامه</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="block two">
+    <div>
+      <h3>في الموشن</h3>
+      <ul class="list">
+        <li>مقدمة كل فيديو: الدائرة السوداء تنفتح على نون وهو يلوّح.</li>
+        <li>النقطة تنزل من فوق رأسه وتصير كرة بادل أو بولينج، وتنقلنا للمشروع.</li>
+        <li>النهاية: نون يرفع إبهامه، والدائرة تنغلق.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>قواعد</h3>
+      <ul class="list dont">
+        <li>لا نغيّر شكل الرأس: لازم يبان حرف النون.</li>
+        <li>لا نشيل النقطة، هي نص الحرف.</li>
+        <li>لا نضيف ألوان من برا ألوان الهوية.</li>
+        <li>لا نمطّه ولا نضغطه، نكبّره ونصغّره بس.</li>
+        <li>على الخلفيات الغامقة النقطة تصير كريمية.</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<script src="assets/noon.js"></script>
+<script>
+  document.getElementById('hero-noon').innerHTML = noonSVG({ pose: 'wave', face: 'happy', label: 'نون يلوّح' });
+  document.getElementById('build-head').innerHTML = noonSVG({ face: 'happy', headOnly: true, label: 'رأس نون' });
+  document.getElementById('card-front').innerHTML = noonSVG({ pose: 'pencil', face: 'happy', label: 'نون يرسم' });
+  document.getElementById('card-back').innerHTML = noonSVG({ pose: 'thumbs', face: 'wink', label: 'نون يرفع إبهامه' });
+  var poses = [
+    ['wave', 'happy', 'يلوّح', 'الهيرو: يرحّب بالزائر'],
+    ['point', 'wink', 'يأشر', 'الأعمال: يدلّ على المشروع'],
+    ['pencil', 'wow', 'يرسم', 'مراحل العمل والخدمات'],
+    ['thumbs', 'happy', 'أبشر', 'بعد إرسال طلب المشروع'],
+    ['idle', 'sleep', 'نايم', 'صفحة 404 وفترات الانتظار']
+  ];
+  document.getElementById('poses').innerHTML = poses.map(function (p) {
+    return '<figure class="pose">' + noonSVG({ pose: p[0], face: p[1], label: 'نون ' + p[2] }) + '<b>' + p[2] + '</b><span>' + p[3] + '</span></figure>';
+  }).join('');
+  var faces = [['happy', 'مبسوط'], ['wink', 'يغمز'], ['wow', 'مندهش'], ['sleep', 'نايم']];
+  document.getElementById('faces').innerHTML = faces.map(function (f) {
+    return '<figure>' + noonSVG({ face: f[0], headOnly: true, label: 'نون ' + f[1] }) + f[1] + '</figure>';
+  }).join('');
+  (function () {
+    var c = document.createElement('canvas'); c.width = c.height = 160;
+    var x = c.getContext('2d'), d = x.createImageData(160, 160);
+    for (var i = 0; i < d.data.length; i += 4) { var v = Math.random() * 255 | 0; d.data[i] = d.data[i+1] = d.data[i+2] = v; d.data[i+3] = 70; }
+    x.putImageData(d, 0, 0); document.querySelector('.grain').style.backgroundImage = 'url(' + c.toDataURL() + ')';
+  })();
+</script>
+</body>
+</html>
