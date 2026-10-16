@@ -231,10 +231,19 @@ a.pill:hover { transform: translate(-2px, -2px); box-shadow: 3px 3px 0 var(--ink
 .solid { color: var(--ink); text-shadow: .03em .03em 0 var(--red); }
 .outline { color: transparent; -webkit-text-stroke: max(1.5px, .012em) var(--red); }
 
+/* Hero mascot: Noon stands in front of the spinning seal */
+.mascot {
+  position: relative; z-index: 1;
+  width: clamp(190px, 21vw, 270px); aspect-ratio: 260 / 316; max-width: 100%;
+  margin-top: -1.6vw;
+}
+.mascot .seal { position: absolute; inset-inline-start: 4%; top: 3%; width: 92%; aspect-ratio: 1; }
+.mascot .seal-ar { display: none; }
+.mascot .seal-core { fill: var(--paper); }   /* keeps the inside of the ن bowl reading as empty */   /* Noon's head sits where the word was */
+.mascot-noon { position: absolute; inset: 0; }
 .seal {
   position: relative;
   width: clamp(120px, 20vw, 210px); aspect-ratio: 1; max-width: 100%;
-  margin-top: -2.2vw;
 }
 .seal svg { width: 100%; height: 100%; animation: spin 26s linear infinite; }
 .seal-bg { fill: var(--mustard); stroke: var(--ink); stroke-width: 4; }
@@ -257,7 +266,7 @@ a.pill:hover { transform: translate(-2px, -2px); box-shadow: 3px 3px 0 var(--ink
 .socials { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
 @media (max-width: 640px) {
   .socials { flex-direction: row; flex-wrap: wrap; align-items: center; }
-  .seal { margin-top: 6px; }
+  .mascot { margin-top: 6px; }
 }
 
 /* ---------- Sections ---------- */
@@ -671,6 +680,29 @@ html.has-cursor input[type="text"] { cursor: text !important; }
 .cursor.is-label span { width: 76px; height: 76px; background: var(--red); color: var(--cream); mix-blend-mode: normal; border: 2.5px solid var(--ink); }
 .cursor.is-hidden span { opacity: 0; }
 html[lang="ar"] .cursor span { font-family: var(--body); font-size: 15px; }
+
+/* ---------- Noon around the site ---------- */
+.sec-head { position: relative; }
+.noon-point { width: clamp(90px, 10vw, 130px); flex: none; margin-inline-start: auto; margin-bottom: -18px; }
+html[dir="ltr"] .noon-point .noon { transform: scaleX(-1); }   /* point toward the content in both languages */
+.reel { position: sticky; }
+.noon-peek {
+  position: absolute; z-index: 3; width: clamp(96px, 9vw, 120px);
+  top: 0; inset-inline-end: 14%; translate: 0 -78%;
+}
+.brief-done[hidden] { display: none; }
+.brief-done { display: grid; grid-template-columns: 110px 1fr; gap: 16px; align-items: center; text-align: start;
+  border: var(--edge); border-radius: 16px; background: var(--cream); padding: 12px 18px; }
+.brief-done p { margin: 0; font-weight: 700; font-size: 17px; }
+.noon-done { width: 110px; }
+.foot { position: relative; }
+.foot-noon { position: absolute; top: 0; inset-inline-end: 8%; width: 74px; translate: 0 -64%; overflow: hidden; height: 70px; }
+.foot-noon .noon { transition: transform .5s var(--ease); transform: translateY(14px); }
+.foot:hover .foot-noon .noon { transform: translateY(0); }
+@media (max-width: 640px) {
+  .noon-point { width: 84px; }
+  .noon-peek { width: 92px; }
+}
 
 /* ---------- Noon (mascot) ---------- */
 .noon { display: block; width: 100%; height: auto; overflow: visible; }

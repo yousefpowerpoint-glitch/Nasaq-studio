@@ -73,8 +73,8 @@
       ? '<text x="150" y="40" font-family="Georgia, serif" font-weight="900" font-size="20" fill="' + INK + '">z</text>' +
         '<text x="166" y="22" font-family="Georgia, serif" font-weight="900" font-size="14" fill="' + INK + '">z</text>'
       : '';
-    return '<g class="noon-dot"><circle cx="120" cy="40" r="17" fill="' + INK + '"/>' +
-      '<circle cx="113" cy="33" r="4.5" fill="' + CREAM + '" opacity=".9"/></g>' + z;
+    return '<g class="noon-dot-wrap"><g class="noon-dot"><circle cx="120" cy="40" r="17" fill="' + INK + '"/>' +
+      '<circle cx="113" cy="33" r="4.5" fill="' + CREAM + '" opacity=".9"/></g></g>' + z;
   }
 
   function body() {

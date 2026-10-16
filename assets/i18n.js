@@ -97,6 +97,7 @@ window.I18N_AR = {
   "brief.lBudget": "الميزانية",
   "brief.lWhen": "الموعد",
   "brief.lName": "الاسم",
+  "brief.done": "تمام! طلبك جاهز في واتساب، اضغط إرسال هناك ونرد عليك قريب.",
   "cursor.view": "شوف",
   "cursor.drag": "اسحب",
   "phone.title": "جرّبه هنا",
