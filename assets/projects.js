@@ -12,6 +12,7 @@ window.PROJECTS = [
     year: "2026",
     role: { en: ["Design", "Development"], ar: ["التصميم", "التطوير"] },
     url: "https://mog-courts.vercel.app/",
+    model: "padel",                // 3D cover, built in assets/models.js
     logo: null,                    // e.g. "assets/work/mog-logo.svg"
     cover: null,                   // e.g. "assets/work/mog-cover.jpg"
     coverStyle: { court: "#2F6E8F", line: "#F6EBD2", accent: "#F0BE2C" },

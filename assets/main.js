@@ -68,26 +68,67 @@
     }).join(' ');
   });
 
+  /* ---------- 3D covers ---------- */
+  function mountModel(el, proj) {
+    if (!el || !proj || !proj.model || !window.mount3D) return;
+    var fallback = el.innerHTML;
+    el.innerHTML = '';
+    if (window.mount3D(el, proj)) {
+      el.insertAdjacentHTML('beforeend', '<span class="spin-hint" aria-hidden="true">' + t('spin', '↔ Drag to spin') + '</span>');
+    } else {
+      el.innerHTML = fallback;
+    }
+  }
+
+  /* ---------- Site settings: contact, socials, reel ---------- */
+  var SITE = window.SITE || {};
+  var socialList = document.getElementById('social-links');
+  if (socialList) {
+    socialList.innerHTML = (SITE.socials || []).map(function (s) {
+      return '<li>' + (s.url ? '<a href="' + s.url + '" target="_blank" rel="noopener">' + s.name + '</a>' : '<span>' + s.name + '</span>') + '</li>';
+    }).join('');
+  }
+  document.querySelectorAll('.btn-red[data-todo]').forEach(function (a) {
+    if (SITE.contact) { a.href = SITE.contact; a.target = '_blank'; a.rel = 'noopener'; a.removeAttribute('data-todo'); }
+  });
+  var reel = document.getElementById('reel');
+  if (reel) {
+    var screen = reel.querySelector('.reel-screen');
+    if (SITE.reel) {
+      screen.innerHTML = '<video src="' + SITE.reel + '"' + (SITE.reelPoster ? ' poster="' + SITE.reelPoster + '"' : '') +
+        ' autoplay muted loop playsinline preload="metadata"></video>';
+      reel.classList.add('has-video');
+    } else if (!reduce) {
+      var n = reel.querySelector('.leader-n'), k = 3;
+      setInterval(function () { k = k === 1 ? 3 : k - 1; n.textContent = k; }, 1000);
+    }
+  }
+
   /* ---------- Work grid ---------- */
   var grid = document.getElementById('grid');
   var projects = window.PROJECTS || [];
   var TYPE = { website: t('year.website', 'Website'), branding: t('filter.branding', 'Branding'), exploration: t('filter.exploration', 'Exploration') };
   function cardHTML(p) {
     return '<a class="card" href="project.html#' + p.id + '" data-type="' + p.type + '" data-iris>' +
-      '<div class="card-media">' + window.coverHTML(p) + '</div>' +
+      '<div class="card-media" data-id="' + p.id + '">' + window.coverHTML(p) + '</div>' +
       '<div class="card-body">' +
         '<span class="card-kicker">' + p.year + ' · ' + (TYPE[p.type] || p.type) + '</span>' +
         '<h3 class="card-title">' + tr(p.title) + (p.subtitle ? '<span>' + tr(p.subtitle) + '</span>' : '') + '</h3>' +
         '<p class="card-sum">' + tr(p.summary) + '</p>' +
         '<ul class="tags">' + tr(p.tags).map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul>' +
-        '<span class="card-go" aria-hidden="true"><span class="arr">↗</span></span>' +
       '</div></a>';
   }
   if (grid) {
     grid.innerHTML = projects.map(cardHTML).join('') +
-      '<div class="slot" data-type="all"><span><b>' + t('slot.title', 'Next project') + '</b><br>' + t('slot.text', 'This space is waiting for yours.') + '</span>' +
-      '<a href="#contact">' + t('slot.cta', 'Start a project') + ' <span class="arr">↗</span></a></div>' +
       '<p class="empty" hidden>' + t('empty', 'Nothing here yet. Coming soon.') + '</p>';
+    grid.querySelectorAll('.card-media').forEach(function (m) {
+      var proj = projects.filter(function (x) { return x.id === m.dataset.id; })[0];
+      mountModel(m, proj);
+    });
+    // Filters only earn their place once there are enough projects of different kinds
+    var kinds = {}; projects.forEach(function (x) { kinds[x.type] = 1; });
+    var filters = document.querySelector('.filters');
+    if (filters) filters.hidden = !(projects.length >= 4 && Object.keys(kinds).length >= 2);
     var count = document.querySelector('[data-count="work"]');
     if (count) count.textContent = String(projects.length).padStart(2, '0');
 
@@ -106,7 +147,7 @@
         });
         grid.querySelector('.empty').hidden = shown > 0;
         if (hasGsap && !reduce) {
-          gsap.fromTo(grid.querySelectorAll('.card:not(.is-hidden), .slot, .empty:not([hidden])'),
+          gsap.fromTo(grid.querySelectorAll('.card:not(.is-hidden), .empty:not([hidden])'),
             { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: .8, ease: EASE, stagger: .06, clearProps: 'transform,opacity' });
         }
         if (window.ScrollTrigger) ScrollTrigger.refresh();
@@ -151,6 +192,7 @@
           '<a class="btn btn-ink" href="index.html#contact" data-iris>' + t('proj.similar', 'Start a project like this') + ' <span class="arr">↗</span></a>' +
         '</section>';
       pageEl.querySelectorAll('[data-split]').forEach(splitInto);
+      mountModel(pageEl.querySelector('.p-cover'), p);
     }
   }
 
@@ -250,7 +292,7 @@
       scrollTrigger: { trigger: t, start: 'top 85%' }
     });
   });
-  gsap.utils.toArray('.card, .slot, .acc-item, .row, .filters, .cta-ar, .contact .btn, .socials-row, .contact .status, main .reveal:not(.hero .reveal)').forEach(function (el) {
+  gsap.utils.toArray('.card, .reel, .acc-item, .row, .cta-alt, .contact .btn, .social-links, main .reveal:not(.hero .reveal)').forEach(function (el) {
     gsap.from(el, { y: 40, opacity: 0, duration: 1.1, ease: EASE, clearProps: 'transform,opacity',
       scrollTrigger: { trigger: el, start: 'top 90%' } });
   });

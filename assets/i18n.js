@@ -72,7 +72,10 @@ window.I18N_AR = {
   "proj.soonPill": "رابط الموقع قريبًا",
   "draft": "مسودة",
   "cover.soon": "الصور قريبًا",
-  "socials": "روابط التواصل"
+  "socials": "روابط التواصل",
+  "reel.title": "الشوريل",
+  "spin": "↔ اسحب للتدوير",
+  "reel.soon": "مقطع الموشن قريبًا"
 };
 
 /* Helpers: current language, a project field in that language, a UI string. */

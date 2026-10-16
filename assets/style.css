@@ -465,6 +465,94 @@ a.pill:hover { transform: translate(-2px, -2px); box-shadow: 3px 3px 0 var(--ink
 .p-gallery img { border: var(--edge); border-radius: 14px; box-shadow: var(--shadow); }
 .p-next { text-align: center; padding-block: 60px 90px; display: grid; justify-items: center; gap: 18px; }
 
+/* ---------- Hero status line ---------- */
+.hero-status {
+  display: inline-flex; align-items: center; gap: 10px; margin: 0;
+  font-weight: 700; font-size: 15px;
+}
+.hero-status i {
+  width: 10px; height: 10px; border-radius: 50%; background: var(--red);
+  animation: pulse 1.8s var(--ease) infinite;
+}
+
+/* ---------- 3D covers ---------- */
+.card-media.has-3d, .p-cover.has-3d {
+  background:
+    radial-gradient(circle at 50% 60%, rgba(240, 190, 44, .45), transparent 62%),
+    repeating-conic-gradient(from 0deg at 50% 60%, var(--paper-2) 0deg 6deg, var(--paper) 6deg 15deg);
+  cursor: grab; touch-action: pan-y;
+}
+.card-media.has-3d:active, .p-cover.has-3d:active { cursor: grabbing; }
+.card-media.has-3d { min-height: 380px; }
+.has-3d > canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.has-3d > * { transition: none; }
+.card:hover .card-media.has-3d > * { transform: none; }
+.spin-hint {
+  position: absolute; bottom: 12px; inset-inline-start: 12px;
+  background: var(--ink); color: var(--cream); border-radius: 999px;
+  padding: 4px 11px; font-size: 12px; font-weight: 600;
+  opacity: .85; pointer-events: none;
+}
+@media (max-width: 760px) { .card-media.has-3d { min-height: 0; aspect-ratio: 4 / 3; } }
+
+/* ---------- Services: reel + list ---------- */
+.svc { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: clamp(24px, 4vw, 56px); align-items: start; margin-top: 30px; }
+.svc .acc { margin-top: 0; }
+.reel { margin: 0; position: sticky; top: 100px; }
+.reel-screen {
+  position: relative; aspect-ratio: 4 / 5; max-width: 100%;
+  background: var(--ink); border: var(--edge); border-radius: 18px; overflow: hidden;
+  box-shadow: var(--shadow);
+}
+/* film sprocket holes down both edges */
+.reel-screen::before, .reel-screen::after {
+  content: ""; position: absolute; top: 0; bottom: 0; width: 22px; z-index: 2;
+  background: radial-gradient(circle, var(--paper) 0 4px, transparent 4.5px) center top / 22px 26px repeat-y;
+  opacity: .9;
+}
+.reel-screen::before { left: 6px; } .reel-screen::after { right: 6px; }
+.reel-screen video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.leader {
+  position: absolute; inset: 0 34px; display: grid; place-items: center;
+  background: repeating-conic-gradient(from 0deg, #2a221c 0deg 1deg, transparent 1deg 90deg), #3A2F27;
+}
+.leader::before { /* the sweeping hand of an old film countdown */
+  content: ""; position: absolute; width: 140%; aspect-ratio: 1;
+  background: conic-gradient(from 0deg, rgba(246, 235, 210, .16) 0deg, transparent 0deg);
+  animation: sweep 1s linear infinite;
+}
+.leader::after {
+  content: ""; position: absolute; width: 62%; aspect-ratio: 1; border-radius: 50%;
+  border: 3px solid var(--cream); box-shadow: 0 0 0 10px #3A2F27, 0 0 0 13px var(--cream);
+}
+@property --a { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+@keyframes sweep { from { --a: 0deg; } to { --a: 360deg; } }
+.leader::before { background: conic-gradient(from 0deg, rgba(246, 235, 210, .2) var(--a), transparent var(--a)); }
+.leader-n {
+  position: relative; z-index: 1;
+  font-family: "Fraunces", Georgia, serif; font-weight: 900; font-size: clamp(90px, 14vw, 170px);
+  color: var(--cream); line-height: 1;
+}
+.reel figcaption { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; margin-top: 14px; font-size: 15px; }
+.reel figcaption b { font-family: var(--display); font-size: 22px; }
+.reel figcaption span { color: var(--muted); }
+.reel.has-video .leader { display: none; }
+@media (max-width: 860px) {
+  .svc { grid-template-columns: 1fr; }
+  .reel { position: relative; top: 0; }
+  .reel-screen { aspect-ratio: 16 / 10; }
+}
+
+/* ---------- Contact social links (text, not buttons) ---------- */
+.social-links { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 26px; }
+.social-links a, .social-links span { font-weight: 700; font-size: 15px; text-decoration: none; position: relative; }
+.social-links span { color: var(--muted); }
+.social-links a::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -3px; height: 2px; background: var(--red);
+  transform: scaleX(0); transition: transform .5s var(--ease);
+}
+.social-links a:hover::after { transform: scaleX(1); }
+
 /* ---------- Language tab (side edge) ---------- */
 .lang-tab {
   position: fixed; z-index: 70; top: 50%;
