@@ -32,6 +32,7 @@
   /* ---------- MOG: a padel court with a floating racket and a bouncing ball ---------- */
   MODELS.padel = function (THREE, root, ramp, colors) {
     var COURT = new THREE.Color(colors && colors.court || '#2F6E8F').getHex();
+    var RACKET = new THREE.Color(colors && colors.racket || '#D63A2B').getHex();
     var court = new THREE.Group();
     root.add(court);
 
@@ -100,13 +101,13 @@
     }
     var headGeo = new THREE.ExtrudeGeometry(s, { depth: 0.18, bevelEnabled: true, bevelThickness: 0.05, bevelSize: 0.05, bevelSegments: 2, curveSegments: 18 });
     headGeo.center();
-    var head = outlined(THREE, headGeo, RED, ramp, 0.035);
+    var head = outlined(THREE, headGeo, RACKET, ramp, 0.035);
     racket.add(head);
     var handle = outlined(THREE, new THREE.CylinderGeometry(0.12, 0.14, 0.9, 16), INK, ramp, 0.06);
     handle.position.y = -1.65; racket.add(handle);
     var grip = outlined(THREE, new THREE.CylinderGeometry(0.15, 0.15, 0.12, 16), MUSTARD, ramp, 0.05);
     grip.position.y = -2.08; racket.add(grip);
-    var throat = outlined(THREE, new THREE.BoxGeometry(0.5, 0.3, 0.2), RED, ramp, 0.05);
+    var throat = outlined(THREE, new THREE.BoxGeometry(0.5, 0.3, 0.2), RACKET, ramp, 0.05);
     throat.position.y = -1.25; racket.add(throat);
     racket.scale.setScalar(0.9);
     racket.position.set(1.4, 2.6, 1.2);

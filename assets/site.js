@@ -4,7 +4,7 @@ window.SITE = {
   // Services motion piece: a short looping video (mp4, muted). Until it exists, a film countdown plays.
   reel: "",              // e.g. "assets/reel/services.mp4"
   reelPoster: "",        // e.g. "assets/reel/services.jpg"
-  whatsapp: "",          // number with country code, digits only, e.g. "9677XXXXXXXX"
+  whatsapp: "967737481653", // number with country code, digits only
   url: "",               // the site's own address once live, e.g. "https://nasaq-studio.vercel.app"
   socials: [
     { name: "Instagram", url: "" },

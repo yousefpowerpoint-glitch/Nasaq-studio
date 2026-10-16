@@ -33,6 +33,9 @@
     });
     // Lines that show the *other* language switch to English when the page is Arabic
     document.querySelectorAll('[data-alt-lang]').forEach(function (el) { el.lang = 'en'; el.dir = 'ltr'; });
+    document.querySelectorAll('[data-i18n-ph]').forEach(function (el) {
+      var v = window.I18N_AR[el.dataset.i18nPh]; if (v) el.placeholder = v;
+    });
     document.querySelectorAll('[data-follow-key]').forEach(function (el) {
       el.dataset.follow = window.I18N_AR[el.dataset.followKey] || el.dataset.follow;
     });
@@ -118,9 +121,10 @@
       var msg = [
         t('brief.hello', "Hi Nasaq Studio, I'd like to start a project."),
         t('brief.lType', 'Type') + ': ' + pick('type'),
-        t('brief.lBudget', 'Budget') + ': ' + pick('budget'),
         t('brief.lWhen', 'Timeline') + ': ' + pick('when')
       ];
+      var budget = document.getElementById('brief-budget').value.trim();
+      if (budget) msg.splice(2, 0, t('brief.lBudget', 'Budget') + ': ' + budget);
       if (name) msg.push(t('brief.lName', 'Name') + ': ' + name);
       var num = String(SITE.whatsapp || '').replace(/\D/g, '');
       if (!num) { note.textContent = t('brief.noNumber', 'The WhatsApp number has not been added yet (assets/site.js).'); return; }
@@ -189,7 +193,7 @@
     var id = (location.hash || '').slice(1);
     var p = projects.filter(function (x) { return x.id === id; })[0] || projects[0];
     if (p) {
-      document.title = tr(p.title) + ' · ' + t('foot.alt', 'Nasaq Studio').replace('NASAQ STUDIO', 'نسق ستوديو');
+      document.title = tr(p.title) + ' · ' + (AR ? 'نسق استديو' : 'Nasaq Studio');
       var draft = function (s) { return s.indexOf('Draft:') === 0 ? '<span class="draft">' + t('draft', 'Draft') + '</span> ' + s.slice(6) : s; };
       pageEl.innerHTML =
         '<section class="p-hero"><div class="wrap">' +
@@ -250,7 +254,7 @@
   });
 
   /* ---------- Arabic hero: both lines set to the same width ---------- */
-  // Same font size for both lines; "نسق" is stretched with kashida until it matches "ستوديو".
+  // Same font size for both lines; "نسق" is stretched with kashida until it matches "استديو".
   function fitHero() {
     if (!AR) return;
     var solid = document.querySelector('.hero-title .solid'), outline = document.querySelector('.hero-title .outline');
@@ -274,19 +278,22 @@
 
   /* ---------- Sticky nav state ---------- */
   var nav = document.querySelector('.nav');
-  var navIn = document.querySelector('.nav-in'), lastY = window.scrollY, lastGlitch = 0;
+  var navIn = document.querySelector('.nav-in'), lastY = window.scrollY;
   function glitch() {
     if (!navIn || reduce) return;
     navIn.classList.remove('is-glitch'); void navIn.offsetWidth;
     navIn.classList.add('is-glitch');
     setTimeout(function () { navIn.classList.remove('is-glitch'); }, 200);
   }
+  // The header glitches once: the moment it turns into the compact bar on the way down.
   function onScroll() {
-    var y = window.scrollY, now = Date.now();
+    var y = window.scrollY;
     if (nav) {
       var stuck = y > 40;
-      if (stuck !== nav.classList.contains('is-stuck')) { nav.classList.toggle('is-stuck', stuck); glitch(); lastGlitch = now; }
-      else if (y > lastY + 4 && y > 40 && now - lastGlitch > 1400) { glitch(); lastGlitch = now; }
+      if (stuck !== nav.classList.contains('is-stuck')) {
+        nav.classList.toggle('is-stuck', stuck);
+        if (stuck && y > lastY) glitch();
+      }
     }
     lastY = y;
   }
