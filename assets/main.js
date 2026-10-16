@@ -62,7 +62,7 @@
       var pose = el.dataset.noon;
       el.innerHTML = pose === 'head'
         ? window.noonSVG({ headOnly: true, face: el.dataset.face || 'happy' })
-        : window.noonSVG({ pose: pose, face: el.dataset.face || 'happy' });
+        : window.noonSVG({ pose: pose, face: el.dataset.face || 'happy', seat: el.hasAttribute('data-seat') });
     });
   }
 
@@ -293,8 +293,19 @@
 
   /* ---------- Sticky nav state ---------- */
   var nav = document.querySelector('.nav');
+  // Noon sits while you scroll down and stands up when you scroll back up
+  var seats = document.querySelectorAll('[data-seat]'), lastY = window.scrollY, sitting = false;
+  function seatNoon(y) {
+    if (Math.abs(y - lastY) < 6) return;
+    var down = y > lastY; lastY = y;
+    if (down === sitting) return;
+    sitting = down;
+    seats.forEach(function (el) { el.classList.toggle('is-sitting', sitting); });
+  }
+
   // Backdrop on/off with a little hysteresis so it never flickers at the threshold
   function onScroll() {
+    if (seats.length) seatNoon(window.scrollY);
     if (!nav) return;
     var y = window.scrollY, stuck = nav.classList.contains('is-stuck');
     if (!stuck && y > 60) nav.classList.add('is-stuck');
@@ -349,10 +360,6 @@
   var chars = document.querySelectorAll('.hero-title .ch, .p-title .ch');
   if (chars.length) intro.from(chars, { yPercent: 115, rotate: 6, duration: 1.3, stagger: .045 }, .55);
   if (document.querySelector('.seal')) intro.from('.seal', { scale: 0, rotate: -120, duration: 1.4, ease: 'back.out(1.6)' }, 1.0);
-  if (document.querySelector('.mascot-noon .noon')) {
-    intro.from('.mascot-noon .noon', { yPercent: 40, scaleY: .6, opacity: 0, transformOrigin: '50% 100%', duration: 1.1, ease: 'back.out(2.2)' }, 1.25);
-    intro.from('.mascot-noon .noon-dot-wrap', { y: -260, duration: 1, ease: 'bounce.out' }, 1.45);
-  }
   if (document.querySelector('.nav')) intro.from('.nav-in > *', { y: -24, opacity: 0, duration: 1, stagger: .06, clearProps: 'transform,opacity' }, 1.0);
   var heroReveal = document.querySelectorAll('.hero .reveal, .p-kicker, .p-meta, .p-back');
   if (heroReveal.length) intro.from(heroReveal, { y: 30, opacity: 0, duration: 1.1, stagger: .1, clearProps: 'transform,opacity' }, 1.15);

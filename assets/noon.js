@@ -94,6 +94,17 @@
       '<ellipse cx="156" cy="292" rx="7" ry="3" fill="' + CREAM + '" opacity=".5"/>';
   }
 
+  // Sitting: hips drop 24 units, knees bend outward, shoes stay put
+  function seatedLegs() {
+    var hose = 'fill="none" ' + S + ' stroke-width="8"';
+    return '<path d="M110 268 Q94 270 92 288" ' + hose + '/>' +
+      '<path d="M130 268 Q148 270 150 288" ' + hose + '/>' +
+      '<ellipse cx="92" cy="297" rx="20" ry="10.5" fill="' + INK + '"/>' +
+      '<ellipse cx="150" cy="297" rx="20" ry="10.5" fill="' + INK + '"/>' +
+      '<ellipse cx="86" cy="292" rx="7" ry="3" fill="' + CREAM + '" opacity=".5"/>' +
+      '<ellipse cx="156" cy="292" rx="7" ry="3" fill="' + CREAM + '" opacity=".5"/>';
+  }
+
   function pencil() {
     return '<g transform="translate(62 252) rotate(-28)">' +
       '<rect x="-5" y="-46" width="10" height="44" fill="' + MUSTARD + '" ' + S + ' stroke-width="3"/>' +
@@ -126,6 +137,8 @@
     }
     return '<svg class="noon noon-' + pose + ' noon-' + kind + '" viewBox="-10 0 260 316" role="img" aria-label="' + (o.label || 'Noon') + '">' +
       '<ellipse cx="121" cy="306" rx="62" ry="7" fill="' + INK + '" opacity=".14"/>' +
-      legs() + body() + arms(pose) + head(kind) + dot(kind) + '</svg>';
+      '<g class="noon-legs-stand">' + legs() + '</g>' +
+      (o.seat ? '<g class="noon-legs-sit">' + seatedLegs() + '</g>' : '') +
+      '<g class="noon-upper">' + body() + arms(pose) + head(kind) + dot(kind) + '</g></svg>';
   };
 })();

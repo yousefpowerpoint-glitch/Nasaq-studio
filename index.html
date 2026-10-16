@@ -62,7 +62,6 @@
         <span class="line outline" data-split data-i18n="hero.outline">STUDIO</span>
       </h1>
 
-      <div class="mascot" aria-hidden="true">
       <div class="seal">
         <svg viewBox="0 0 200 200">
           <defs><path id="ring" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs>
@@ -71,8 +70,6 @@
           <text class="seal-ring" direction="ltr"><textPath href="#ring">DESIGN · WEB · BRANDING · MOTION · EST. 2026 ·</textPath></text>
         </svg>
         <span class="seal-ar" lang="ar" dir="rtl">نسق</span>
-      </div>
-      <div class="mascot-noon" data-noon="wave"></div>
       </div>
 
       <div class="hero-foot">
@@ -91,7 +88,6 @@
     <div class="wrap">
       <div class="sec-head">
         <h2 class="sec-title" data-split-words data-i18n="work.title">/Selected work</h2>
-        <div class="noon-point" data-noon="point" data-face="wink" aria-hidden="true"></div>
         <div class="filters" role="tablist" hidden>
           <button class="chip is-on" data-filter="all" role="tab" aria-selected="true" data-i18n="filter.all">All</button>
           <button class="chip" data-filter="website" role="tab" aria-selected="false" data-i18n="filter.website">Websites</button>
@@ -99,7 +95,10 @@
           <button class="chip" data-filter="exploration" role="tab" aria-selected="false" data-i18n="filter.exploration">Exploration</button>
         </div>
       </div>
-      <div class="grid" id="grid"></div>
+      <div class="seat-wrap">
+        <div class="noon-seat noon-work" data-noon="point" data-face="wink" data-seat aria-hidden="true"></div>
+        <div class="grid" id="grid"></div>
+      </div>
     </div>
   </section>
 
@@ -109,7 +108,7 @@
       <h2 class="sec-title" data-split-words data-i18n="services.title">/Services</h2>
       <div class="svc">
       <figure class="reel" id="reel">
-        <div class="noon-peek" data-noon="pencil" data-face="wow" aria-hidden="true"></div>
+        <div class="noon-seat noon-reel" data-noon="pencil" data-face="wow" data-seat aria-hidden="true"></div>
         <div class="reel-screen">
           <div class="leader" aria-hidden="true"><span class="leader-n">3</span></div>
         </div>
@@ -229,7 +228,6 @@
 </main>
 
 <footer class="foot">
-  <div class="foot-noon" data-noon="head" aria-hidden="true"></div>
   <div class="wrap foot-in">
     <span data-i18n="foot.copy">© 2026 Nasaq Studio</span>
     <span class="foot-alt" lang="ar" dir="rtl" data-i18n="foot.alt" data-alt-lang>نسق استديو</span>
