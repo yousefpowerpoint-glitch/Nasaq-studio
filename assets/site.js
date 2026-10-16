@@ -10,6 +10,6 @@ window.SITE = {
     { name: "Instagram", url: "" },
     { name: "Behance", url: "" },
     { name: "Dribbble", url: "" },
-    { name: "WhatsApp", url: "" }
+    { name: "WhatsApp", url: "https://wa.me/967737481653" }
   ]
 };
