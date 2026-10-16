@@ -6,6 +6,15 @@
 <title>Nasaq Studio</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Nasaq Studio designs and builds websites, interfaces and brands.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Nasaq Studio · نسق ستوديو">
+<meta property="og:description" content="Design &amp; web studio. Websites, interfaces and brands.">
+<meta property="og:image" content="assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#F1E4C6">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..900,0..100,0..1&family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=Lalezar&display=swap">
@@ -47,7 +56,7 @@
     <div class="rays" aria-hidden="true"></div>
     <div class="wrap hero-in">
       <h1 class="hero-title">
-        <span class="line solid" data-split data-i18n="hero.solid">NASAQ</span>
+        <span class="line solid" data-split data-i18n="hero.solidFit">NASAQ</span>
         <span class="line outline" data-split data-i18n="hero.outline">STUDIO</span>
       </h1>
 
@@ -176,7 +185,39 @@
     <div class="wrap contact-in">
       <h2 class="cta-title" data-split-words data-i18n="cta.title">Have a project in mind?</h2>
       <p class="cta-alt" lang="ar" dir="rtl" data-i18n="cta.alt" data-alt-lang>عندك مشروع؟ خلّنا نسوّيه سوا.</p>
-      <a class="btn btn-red magnetic" href="#" data-todo><span data-i18n="cta.button">Contact us</span> <span class="arr">↗</span></a>
+      <form class="brief" id="brief" novalidate>
+        <fieldset>
+          <legend data-i18n="brief.type">What do you need?</legend>
+          <div class="opts">
+            <label><input type="radio" name="type" id="type-web" value="web" checked><span data-i18n="brief.web">Website</span></label>
+            <label><input type="radio" name="type" id="type-brand" value="brand"><span data-i18n="brief.brand">Branding</span></label>
+            <label><input type="radio" name="type" id="type-ui" value="ui"><span data-i18n="brief.ui">UI/UX design</span></label>
+            <label><input type="radio" name="type" id="type-motion" value="motion"><span data-i18n="brief.motion">Motion</span></label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend data-i18n="brief.budget">Budget</legend>
+          <div class="opts">
+            <label><input type="radio" name="budget" id="budget-1" value="1"><span data-i18n="brief.b1">Under $500</span></label>
+            <label><input type="radio" name="budget" id="budget-2" value="2" checked><span data-i18n="brief.b2">$500–1,500</span></label>
+            <label><input type="radio" name="budget" id="budget-3" value="3"><span data-i18n="brief.b3">$1,500–5,000</span></label>
+            <label><input type="radio" name="budget" id="budget-4" value="4"><span data-i18n="brief.b4">$5,000+</span></label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend data-i18n="brief.when">When?</legend>
+          <div class="opts">
+            <label><input type="radio" name="when" id="when-1" value="1"><span data-i18n="brief.w1">As soon as possible</span></label>
+            <label><input type="radio" name="when" id="when-2" value="2" checked><span data-i18n="brief.w2">Within a month</span></label>
+            <label><input type="radio" name="when" id="when-3" value="3"><span data-i18n="brief.w3">Flexible</span></label>
+          </div>
+        </fieldset>
+        <label class="brief-name"><span data-i18n="brief.name">Your name</span>
+          <input type="text" id="brief-name" name="name" autocomplete="name">
+        </label>
+        <button class="btn btn-red magnetic" type="submit"><span data-i18n="brief.send">Send on WhatsApp</span> <span class="arr">↗</span></button>
+        <p class="brief-note" id="brief-note" aria-live="polite"></p>
+      </form>
       <ul class="social-links" id="social-links"></ul>
     </div>
   </section>

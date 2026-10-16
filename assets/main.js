@@ -104,6 +104,34 @@
     }
   }
 
+  /* ---------- Project brief -> WhatsApp ---------- */
+  var brief = document.getElementById('brief');
+  if (brief) {
+    brief.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var note = document.getElementById('brief-note');
+      var pick = function (name) {
+        var el = brief.querySelector('input[name="' + name + '"]:checked');
+        return el ? el.parentElement.querySelector('span').textContent : '';
+      };
+      var name = document.getElementById('brief-name').value.trim();
+      var msg = [
+        t('brief.hello', "Hi Nasaq Studio, I'd like to start a project."),
+        t('brief.lType', 'Type') + ': ' + pick('type'),
+        t('brief.lBudget', 'Budget') + ': ' + pick('budget'),
+        t('brief.lWhen', 'Timeline') + ': ' + pick('when')
+      ];
+      if (name) msg.push(t('brief.lName', 'Name') + ': ' + name);
+      var num = String(SITE.whatsapp || '').replace(/\D/g, '');
+      if (!num) { note.textContent = t('brief.noNumber', 'The WhatsApp number has not been added yet (assets/site.js).'); return; }
+      note.textContent = '';
+      var a = document.createElement('a');
+      a.href = 'https://wa.me/' + num + '?text=' + encodeURIComponent(msg.join('\n'));
+      a.target = '_blank'; a.rel = 'noopener';
+      document.body.appendChild(a); a.click(); a.remove();
+    });
+  }
+
   /* ---------- Work grid ---------- */
   var grid = document.getElementById('grid');
   var projects = window.PROJECTS || [];
@@ -178,6 +206,18 @@
           '</dl>' +
         '</div></section>' +
         '<div class="wrap"><div class="p-cover reveal">' + window.coverHTML(p) + '</div></div>' +
+        (p.url || p.phoneVideo ? '<section class="wrap p-phone">' +
+          '<div class="phone reveal"><div class="phone-screen">' +
+            '<span class="phone-wait">' + t('phone.loading', 'The live site opens here once published') + '</span>' +
+            (p.phoneVideo
+              ? '<video src="' + p.phoneVideo + '" autoplay muted loop playsinline></video>'
+              : '<iframe src="' + p.url + '" title="' + tr(p.title) + '" loading="lazy" referrerpolicy="no-referrer"></iframe>') +
+          '</div></div>' +
+          '<div class="p-phone-copy reveal">' +
+            '<h2>' + t('phone.title', 'Try it here') + '</h2>' +
+            '<p>' + t('phone.text', 'This is the real site, running inside the phone. Scroll and tap around like a customer would.') + '</p>' +
+            (p.url ? '<a class="link-u" href="' + p.url + '" target="_blank" rel="noopener">' + t('phone.open', 'Open it in a new tab ↗') + '</a>' : '') +
+          '</div></section>' : '') +
         '<section class="wrap p-text">' +
           '<h2>' + t('proj.overview', 'Overview') + '</h2><p class="reveal">' + draft(tr(p.overview)) + '</p>' +
           '<h2>' + t('proj.challenge', 'Challenge') + '</h2><p class="reveal">' + draft(tr(p.challenge)) + '</p>' +
@@ -209,9 +249,47 @@
     });
   });
 
+  /* ---------- Arabic hero: both lines set to the same width ---------- */
+  // Same font size for both lines; "نسق" is stretched with kashida until it matches "ستوديو".
+  function fitHero() {
+    if (!AR) return;
+    var solid = document.querySelector('.hero-title .solid'), outline = document.querySelector('.hero-title .outline');
+    if (!solid || !outline) return;
+    var box = document.querySelector('.hero-in');
+    var target = Math.min(box.clientWidth * 0.86, 780);
+    var width = function (el) { el.style.display = 'inline-block'; var w = el.getBoundingClientRect().width; el.style.display = ''; return w; };
+    outline.style.fontSize = '100px';
+    var size = 100 * target / width(outline);
+    outline.style.fontSize = solid.style.fontSize = size.toFixed(1) + 'px';
+    var goal = width(outline), k = 0;
+    for (; k < 20; k++) {
+      solid.textContent = 'نس' + 'ـ'.repeat(k) + 'ق';
+      if (width(solid) >= goal * 0.98) break;
+    }
+    splitInto(solid);
+  }
+  fitHero();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitHero);
+  window.addEventListener('resize', fitHero);
+
   /* ---------- Sticky nav state ---------- */
   var nav = document.querySelector('.nav');
-  function onScroll() { if (nav) nav.classList.toggle('is-stuck', window.scrollY > 40); }
+  var navIn = document.querySelector('.nav-in'), lastY = window.scrollY, lastGlitch = 0;
+  function glitch() {
+    if (!navIn || reduce) return;
+    navIn.classList.remove('is-glitch'); void navIn.offsetWidth;
+    navIn.classList.add('is-glitch');
+    setTimeout(function () { navIn.classList.remove('is-glitch'); }, 200);
+  }
+  function onScroll() {
+    var y = window.scrollY, now = Date.now();
+    if (nav) {
+      var stuck = y > 40;
+      if (stuck !== nav.classList.contains('is-stuck')) { nav.classList.toggle('is-stuck', stuck); glitch(); lastGlitch = now; }
+      else if (y > lastY + 4 && y > 40 && now - lastGlitch > 1400) { glitch(); lastGlitch = now; }
+    }
+    lastY = y;
+  }
   window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
   /* ---------- Unfinished links ---------- */
@@ -292,7 +370,7 @@
       scrollTrigger: { trigger: t, start: 'top 85%' }
     });
   });
-  gsap.utils.toArray('.card, .reel, .acc-item, .row, .cta-alt, .contact .btn, .social-links, main .reveal:not(.hero .reveal)').forEach(function (el) {
+  gsap.utils.toArray('.card, .reel, .acc-item, .row, .cta-alt, .brief fieldset, .brief-name, .contact .btn, .social-links, main .reveal:not(.hero .reveal)').forEach(function (el) {
     gsap.from(el, { y: 40, opacity: 0, duration: 1.1, ease: EASE, clearProps: 'transform,opacity',
       scrollTrigger: { trigger: el, start: 'top 90%' } });
   });
@@ -307,6 +385,27 @@
 
   /* ---------- Desktop-only: follower + magnetic ---------- */
   if (!fine) return;
+
+  var cursor = document.createElement('div');
+  cursor.className = 'cursor'; cursor.setAttribute('aria-hidden', 'true');
+  cursor.innerHTML = '<span></span>';
+  document.body.appendChild(cursor);
+  root.classList.add('has-cursor');
+  var cLabel = cursor.querySelector('span');
+  var cx = gsap.quickTo(cursor, 'x', { duration: .25, ease: 'power3' });
+  var cy = gsap.quickTo(cursor, 'y', { duration: .25, ease: 'power3' });
+  window.addEventListener('mousemove', function (e) {
+    cx(e.clientX); cy(e.clientY);
+    var el = e.target.closest ? e.target : null;
+    var state = '', text = '';
+    if (el && el.closest('.has-3d')) { state = 'is-label'; text = t('cursor.drag', 'Drag'); }
+    else if (el && el.closest('.card')) { state = 'is-label'; text = t('cursor.view', 'View'); }
+    else if (el && el.closest('[data-follow]')) { state = 'is-hidden'; }
+    else if (el && el.closest('a, button, label, input')) { state = 'is-link'; }
+    cursor.className = 'cursor ' + state;
+    cLabel.textContent = text;
+  });
+  document.addEventListener('mouseleave', function () { cursor.classList.add('is-hidden'); });
 
   var follower = document.querySelector('.follower');
   if (follower) {
