@@ -561,6 +561,7 @@ a.pill:hover { transform: translate(-2px, -2px); box-shadow: 3px 3px 0 var(--ink
 .reel figcaption b { font-family: var(--display); font-size: 22px; }
 .reel figcaption span { color: var(--muted); }
 .reel.has-video .leader { display: none; }
+.reel.has-video .reel-screen { aspect-ratio: 4 / 5; }   /* the services film is 4:5 */
 @media (max-width: 860px) {
   .svc { grid-template-columns: 1fr; }
   .reel { position: relative; top: 0; }
