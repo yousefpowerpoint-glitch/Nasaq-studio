@@ -530,6 +530,7 @@
       $('#setup').hidden = false;
       $('#setup-why').textContent = (r.missing || []).map(function (k) { return why[k] || k; }).join(' ') ||
         'الإعدادات ناقصة.';
+      $('#setup-why').textContent += ' (النسخة: ' + (r.build || '?') + ')';
       return;
     }
     if (!r.loggedIn) return showGate();
