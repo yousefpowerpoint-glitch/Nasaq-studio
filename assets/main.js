@@ -82,8 +82,19 @@
   });
 
   /* ---------- 3D covers ---------- */
-  function mountModel(el, proj) {
-    if (!el || !proj || !proj.model || !window.mount3D) return;
+  // three.js (~600 KB) is only fetched once a cover is about to scroll into view.
+  var threeReady = null;
+  function loadThree() {
+    if (window.THREE) return Promise.resolve();
+    if (!threeReady) threeReady = new Promise(function (ok, fail) {
+      var s = document.createElement('script');
+      s.src = 'assets/vendor/three.min.js';
+      s.onload = ok; s.onerror = fail;
+      document.head.appendChild(s);
+    });
+    return threeReady;
+  }
+  function mountNow(el, proj) {
     var fallback = el.innerHTML;
     el.innerHTML = '';
     if (window.mount3D(el, proj)) {
@@ -91,6 +102,17 @@
     } else {
       el.innerHTML = fallback;
     }
+  }
+  function mountModel(el, proj) {
+    if (!el || !proj || !proj.model || !window.mount3D) return;
+    function go() { loadThree().then(function () { mountNow(el, proj); }, function () {}); }
+    if (!('IntersectionObserver' in window)) return go();
+    var io = new IntersectionObserver(function (entries) {
+      if (!entries[0].isIntersecting) return;
+      io.disconnect();
+      go();
+    }, { rootMargin: '400px 0px' });
+    io.observe(el);
   }
 
   /* ---------- Site settings: contact, socials, reel ---------- */
@@ -108,9 +130,20 @@
   if (reel) {
     var screen = reel.querySelector('.reel-screen');
     if (SITE.reel) {
-      screen.innerHTML = '<video src="' + SITE.reel + '"' + (SITE.reelPoster ? ' poster="' + SITE.reelPoster + '"' : '') +
-        ' autoplay muted loop playsinline preload="metadata"></video>';
+      // Only the poster loads up front; the film is fetched when the reel nears the screen
+      // and pauses whenever it scrolls away.
+      screen.innerHTML = '<video' + (SITE.reelPoster ? ' poster="' + SITE.reelPoster + '"' : '') +
+        ' muted loop playsinline preload="none"></video>';
       reel.classList.add('has-video');
+      var vid = screen.querySelector('video');
+      if (!('IntersectionObserver' in window)) { if (!reduce) { vid.src = SITE.reel; vid.autoplay = true; } }
+      else new IntersectionObserver(function (entries) {
+        if (reduce) return; // reduced motion: the poster stands in for the film
+        if (entries[0].isIntersecting) {
+          if (!vid.src) vid.src = SITE.reel;
+          var pr = vid.play(); if (pr && pr.catch) pr.catch(function () {});
+        } else if (vid.src) vid.pause();
+      }, { rootMargin: '200px 0px' }).observe(reel);
     } else if (!reduce) {
       var n = reel.querySelector('.leader-n'), k = 3;
       setInterval(function () { k = k === 1 ? 3 : k - 1; n.textContent = k; }, 1000);
@@ -258,11 +291,12 @@
     }
   }
 
-  /* ---------- Services accordion ---------- */
+  /* ---------- Accordions: services, FAQ ---------- */
   document.querySelectorAll('.acc-head').forEach(function (head) {
     head.addEventListener('click', function () {
       var item = head.parentElement, open = item.classList.contains('is-open');
-      document.querySelectorAll('.acc-item').forEach(function (i) {
+      // One open item per list (services and FAQ are separate lists)
+      item.parentElement.querySelectorAll('.acc-item').forEach(function (i) {
         i.classList.remove('is-open');
         i.querySelector('.acc-head').setAttribute('aria-expanded', 'false');
       });

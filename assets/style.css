@@ -762,3 +762,11 @@ html[lang="ar"] .logo-en, html[lang="ar"] .seal-ring { font-family: "Fraunces", 
   html.js-intro .iris { visibility: hidden; }
   .follower { display: none; }
 }
+
+/* ---------- FAQ (inside the dark Process section) ---------- */
+.faq { margin-top: clamp(64px, 9vw, 120px); }
+.faq-list { border-top-color: rgba(246, 235, 210, .35); }
+.faq-list .acc-item { border-bottom-color: rgba(246, 235, 210, .35); }
+.faq-list .acc-item.is-open { background: var(--cream); color: var(--ink); }
+.faq-list .acc-name { font-size: clamp(20px, 2.6vw, 32px); line-height: 1.15; text-transform: none; }
+.faq-list .acc-inner p { max-width: 60ch; }

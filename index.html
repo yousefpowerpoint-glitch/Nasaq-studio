@@ -28,6 +28,7 @@
   })(document.documentElement);
 </script>
 <link rel="stylesheet" href="assets/style.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "inLanguage": "ar", "mainEntity": [{"@type": "Question", "name": "كم ياخذ المشروع من وقت؟", "acceptedAnswer": {"@type": "Answer", "text": "أغلب المواقع تاخذ حوالي ستة أسابيع من أول جلسة لين الإطلاق، والصفحة الواحدة أقل. وتستلم جدول زمني واضح قبل ما نبدأ."}}, {"@type": "Question", "name": "وش أستلم في النهاية؟", "acceptedAnswer": {"@type": "Answer", "text": "موقع شغّال على الدومين حقك، وملفات التصميم، والكود المصدري، ودليل مختصر تعدّل فيه المحتوى بنفسك."}}, {"@type": "Question", "name": "كيف تحسبون السعر؟", "acceptedAnswer": {"@type": "Answer", "text": "كل مشروع يتسعّر حسب حجمه. اكتب ميزانيتك في النموذج تحت ونقترح عليك اللي يناسبها. السعر ومراحل الدفع نتفق عليها قبل أي شغل."}}, {"@type": "Question", "name": "هل تتابعون بعد الإطلاق؟", "acceptedAnswer": {"@type": "Answer", "text": "أكيد. نبقى معك للإصلاحات والتعديلات بعد الإطلاق، لفترة نتفق عليها سوا."}}, {"@type": "Question", "name": "تشتغلون مع عملاء خارج عدن؟", "acceptedAnswer": {"@type": "Answer", "text": "نعم. نشتغل مع عملاء من أي مكان، عن طريق واتساب ومكالمات الفيديو."}}, {"@type": "Question", "name": "لازم يكون المحتوى جاهز عندي؟", "acceptedAnswer": {"@type": "Answer", "text": "لا. أرسل اللي عندك، ونساعدك في النصوص والصور."}}]}</script>
 </head>
 <body>
 
@@ -182,6 +183,64 @@
           <span class="row-when" data-i18n="p4.when">Week 6</span>
         </li>
       </ol>
+
+      <!-- FAQ -->
+      <div class="faq" id="faq">
+        <div class="sec-head">
+          <h2 class="sec-title faq-title" data-split-words data-i18n="faq.title">/FAQ</h2>
+          <span class="sec-note" data-i18n="faq.note">Before you ask</span>
+        </div>
+        <ul class="acc faq-list">
+        <li class="acc-item">
+          <button class="acc-head" aria-expanded="false">
+            <span class="acc-name" data-i18n="faq1.q">How long does a project take?</span><span class="acc-icon" aria-hidden="true"></span>
+          </button>
+          <div class="acc-body"><div class="acc-inner">
+            <p data-i18n="faq1.a">Most websites take about six weeks from the first call to launch. A single page takes less. You get a clear timeline before we start.</p>
+          </div></div>
+        </li>
+        <li class="acc-item">
+          <button class="acc-head" aria-expanded="false">
+            <span class="acc-name" data-i18n="faq2.q">What do I get at the end?</span><span class="acc-icon" aria-hidden="true"></span>
+          </button>
+          <div class="acc-body"><div class="acc-inner">
+            <p data-i18n="faq2.a">A live site on your own domain, the design files, the source code, and a short guide for updating your content.</p>
+          </div></div>
+        </li>
+        <li class="acc-item">
+          <button class="acc-head" aria-expanded="false">
+            <span class="acc-name" data-i18n="faq3.q">How do you price a project?</span><span class="acc-icon" aria-hidden="true"></span>
+          </button>
+          <div class="acc-body"><div class="acc-inner">
+            <p data-i18n="faq3.a">Every project is priced on its scope. Write your budget in the brief below and we will suggest what fits it. Price and payment steps are agreed before any work starts.</p>
+          </div></div>
+        </li>
+        <li class="acc-item">
+          <button class="acc-head" aria-expanded="false">
+            <span class="acc-name" data-i18n="faq4.q">Do you stay on after launch?</span><span class="acc-icon" aria-hidden="true"></span>
+          </button>
+          <div class="acc-body"><div class="acc-inner">
+            <p data-i18n="faq4.a">Yes. We stay with you for fixes and changes after launch, for a period we agree on together.</p>
+          </div></div>
+        </li>
+        <li class="acc-item">
+          <button class="acc-head" aria-expanded="false">
+            <span class="acc-name" data-i18n="faq5.q">Do you work with clients outside Aden?</span><span class="acc-icon" aria-hidden="true"></span>
+          </button>
+          <div class="acc-body"><div class="acc-inner">
+            <p data-i18n="faq5.a">Yes. We work with clients anywhere, over WhatsApp and video calls.</p>
+          </div></div>
+        </li>
+        <li class="acc-item">
+          <button class="acc-head" aria-expanded="false">
+            <span class="acc-name" data-i18n="faq6.q">Do I need my content ready?</span><span class="acc-icon" aria-hidden="true"></span>
+          </button>
+          <div class="acc-body"><div class="acc-inner">
+            <p data-i18n="faq6.a">No. Send what you have, and we help with the text and the images.</p>
+          </div></div>
+        </li>
+        </ul>
+      </div>
     </div>
   </section>
 
@@ -238,7 +297,6 @@
 <script src="assets/vendor/gsap.min.js"></script>
 <script src="assets/vendor/ScrollTrigger.min.js"></script>
 <script src="assets/vendor/lenis.min.js"></script>
-<script src="assets/vendor/three.min.js"></script>
 <script src="assets/site.js"></script>
 <script src="assets/i18n.js"></script>
 <script src="assets/projects.js"></script>
@@ -246,5 +304,8 @@
 <script src="assets/models.js"></script>
 <script src="assets/noon.js"></script>
 <script src="assets/main.js"></script>
+<!-- Vercel Web Analytics (cookie-free page views) -->
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
