@@ -281,7 +281,7 @@
     var id = (location.hash || '').slice(1);
     var p = projects.filter(function (x) { return x.id === id; })[0] || projects[0];
     if (p) {
-      document.title = tr(p.title) + ' · ' + (AR ? 'نسق استديو' : 'Nasaq Studio');
+      document.title = tr(p.title) + ' · ' + (AR ? 'نسّق استديو' : 'Nasaq Studio');
       var draft = function (s) { return s.indexOf('Draft:') === 0 ? '<span class="draft">' + t('draft', 'Draft') + '</span> ' + s.slice(6) : s; };
       pageEl.innerHTML =
         '<section class="p-hero"><div class="wrap">' +
@@ -343,7 +343,7 @@
   });
 
   /* ---------- Arabic hero: both lines set to the same width ---------- */
-  // Same font size for both lines; "نسق" is stretched with kashida until it matches "استديو".
+  // Same font size for both lines; "نسّق" is stretched with kashida until it matches "استديو".
   function fitHero() {
     if (!AR) return;
     var solid = document.querySelector('.hero-title .solid'), outline = document.querySelector('.hero-title .outline');
@@ -356,7 +356,7 @@
     outline.style.fontSize = solid.style.fontSize = size.toFixed(1) + 'px';
     var goal = width(outline), k = 0;
     for (; k < 20; k++) {
-      solid.textContent = 'نس' + 'ـ'.repeat(k) + 'ق';
+      solid.textContent = 'نسّ' + 'ـ'.repeat(k) + 'ق';
       if (width(solid) >= goal * 0.98) break;
     }
     splitInto(solid);
