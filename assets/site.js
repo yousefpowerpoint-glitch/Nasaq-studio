@@ -5,7 +5,7 @@ window.SITE = {
   reel: "assets/reel/services.mp4",
   reelPoster: "assets/reel/services.jpg",
   whatsapp: "967737481653", // number with country code, digits only
-  url: "https://nasaq-studio-psi.vercel.app",
+  url: "https://nasaqstudio.online",
   socials: [
     { name: "Instagram", url: "" },
     { name: "Behance", url: "" },

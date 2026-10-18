@@ -12,7 +12,7 @@ Static site (HTML, CSS, JS). No build step, no server.
 | `assets/vendor/` | GSAP 3.12.5, ScrollTrigger, Lenis 1.1.13 (kept locally, no CDN) |
 
 ## Live
-https://nasaq-studio-psi.vercel.app — Vercel deploys every push to `main`.
+https://nasaqstudio.online — Vercel deploys every push to `main`.
 
 ## Adding a project
 1. Put screenshots in `assets/work/`.
