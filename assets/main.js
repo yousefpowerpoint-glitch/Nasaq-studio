@@ -115,6 +115,38 @@
     io.observe(el);
   }
 
+  /* ---------- Brand identity boards ---------- */
+  var brandList = document.getElementById('brand-list');
+  if (brandList) {
+    var BRANDS = window.BRANDS || [];
+    if (!BRANDS.length) {
+      brandList.innerHTML = '<div class="board board-empty">' +
+        '<div class="frame f-cover"><span>' + t('brands.logo', 'Logo') + '</span></div>' +
+        '<div class="frame f-side"><span>' + t('brands.colors', 'Colour') + '</span></div>' +
+        '<div class="frame f-side"><span>' + t('brands.apps', 'In use') + '</span></div>' +
+        '<p class="board-soon">' + t('brands.soon', 'The first identity lands here soon.') + '</p>' +
+      '</div>';
+    } else {
+      brandList.innerHTML = BRANDS.map(function (b) {
+        var name = tr(b.name);
+        var pic = function (im, cls) {
+          return '<a class="frame ' + cls + '" href="' + im.src + '" target="_blank" rel="noopener">' +
+            '<img src="' + im.src + '" alt="' + (tr(im.alt) || name) + '" loading="lazy" decoding="async"></a>';
+        };
+        var imgs = b.images || [];
+        return '<article class="board">' +
+          '<header class="board-head"><h3>' + name + '</h3><span class="card-kicker">' + (b.year || '') + '</span>' +
+            (b.summary ? '<p>' + tr(b.summary) + '</p>' : '') + '</header>' +
+          (b.cover ? pic({ src: b.cover, alt: b.name }, 'f-cover') : '') +
+          imgs.map(function (im, i) { return pic(im, i < 2 && b.cover ? 'f-side' : 'f-tile'); }).join('') +
+          ((b.colors || []).length ? '<ul class="swatches" aria-label="' + t('brands.palette', 'Palette') + '">' + b.colors.map(function (c) {
+            return '<li style="--c:' + c + '"><span>' + c.toUpperCase() + '</span></li>';
+          }).join('') + '</ul>' : '') +
+        '</article>';
+      }).join('');
+    }
+  }
+
   /* ---------- Site settings: contact, socials, reel ---------- */
   var SITE = window.SITE || {};
   var socialList = document.getElementById('social-links');
@@ -427,7 +459,7 @@
       scrollTrigger: { trigger: t, start: 'top 85%' }
     });
   });
-  gsap.utils.toArray('.card, .reel, .acc-item, .row, .cta-alt, .brief fieldset, .brief-name, .contact .btn, .social-links, main .reveal:not(.hero .reveal)').forEach(function (el) {
+  gsap.utils.toArray('.card, .board, .reel, .acc-item, .row, .cta-alt, .brief fieldset, .brief-name, .contact .btn, .social-links, main .reveal:not(.hero .reveal)').forEach(function (el) {
     gsap.from(el, { y: 40, opacity: 0, duration: 1.1, ease: EASE, clearProps: 'transform,opacity',
       scrollTrigger: { trigger: el, start: 'top 90%' } });
   });
@@ -451,35 +483,47 @@
   var cLabel = cursor.querySelector('span');
   var cx = gsap.quickTo(cursor, 'x', { duration: .25, ease: 'power3' });
   var cy = gsap.quickTo(cursor, 'y', { duration: .25, ease: 'power3' });
-  window.addEventListener('mousemove', function (e) {
-    cx(e.clientX); cy(e.clientY);
-    var el = e.target.closest ? e.target : null;
+  var follower = document.querySelector('.follower');
+  var fLabel = follower && follower.querySelector('span');
+  var fx = follower && gsap.quickTo(follower, 'x', { duration: .6, ease: 'power3' });
+  var fy = follower && gsap.quickTo(follower, 'y', { duration: .6, ease: 'power3' });
+  var mouse = null, followRow = null;
+
+  // Hover state comes from what is under the pointer right now, so it stays right
+  // when the page scrolls under a still mouse (mouseenter/leave don't fire then).
+  function hover() {
+    if (!mouse) return;
+    var el = document.elementFromPoint(mouse.x, mouse.y);
     var state = '', text = '';
+    var row = el && el.closest('[data-follow]');
     if (el && el.closest('.has-3d')) { state = 'is-label'; text = t('cursor.drag', 'Drag'); }
     else if (el && el.closest('.card')) { state = 'is-label'; text = t('cursor.view', 'View'); }
-    else if (el && el.closest('[data-follow]')) { state = 'is-hidden'; }
+    else if (row) { state = 'is-hidden'; }
     else if (el && el.closest('a, button, label, input')) { state = 'is-link'; }
     cursor.className = 'cursor ' + state;
     cLabel.textContent = text;
-  });
-  document.addEventListener('mouseleave', function () { cursor.classList.add('is-hidden'); });
-
-  var follower = document.querySelector('.follower');
-  if (follower) {
-    var label = follower.querySelector('span');
-    var fx = gsap.quickTo(follower, 'x', { duration: .6, ease: 'power3' });
-    var fy = gsap.quickTo(follower, 'y', { duration: .6, ease: 'power3' });
-    window.addEventListener('mousemove', function (e) { fx(e.clientX); fy(e.clientY); });
-    document.querySelectorAll('[data-follow]').forEach(function (row) {
-      row.addEventListener('mouseenter', function () {
-        label.textContent = row.dataset.follow;
-        gsap.to(follower, { opacity: 1, scale: 1, rotate: gsap.utils.random(-8, 8), duration: .5, ease: EASE });
-      });
-      row.addEventListener('mouseleave', function () {
-        gsap.to(follower, { opacity: 0, scale: .6, duration: .4, ease: EASE });
-      });
-    });
+    if (follower && row !== followRow) {
+      followRow = row;
+      if (row) {
+        fLabel.textContent = row.dataset.follow;
+        gsap.to(follower, { opacity: 1, scale: 1, rotate: gsap.utils.random(-8, 8), duration: .5, ease: EASE, overwrite: 'auto' });
+      } else {
+        gsap.to(follower, { opacity: 0, scale: .6, duration: .3, ease: EASE, overwrite: 'auto' });
+      }
+    }
   }
+  window.addEventListener('mousemove', function (e) {
+    mouse = { x: e.clientX, y: e.clientY };
+    cx(e.clientX); cy(e.clientY);
+    if (follower) { fx(e.clientX); fy(e.clientY); }
+    hover();
+  });
+  window.addEventListener('scroll', hover, { passive: true });
+  document.addEventListener('mouseleave', function () {
+    cursor.classList.add('is-hidden');
+    mouse = null; followRow = null;
+    if (follower) gsap.to(follower, { opacity: 0, scale: .6, duration: .3, ease: EASE, overwrite: 'auto' });
+  });
 
   document.querySelectorAll('.magnetic').forEach(function (btn) {
     btn.addEventListener('mousemove', function (e) {
