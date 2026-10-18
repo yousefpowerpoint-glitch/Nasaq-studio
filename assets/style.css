@@ -787,10 +787,11 @@ html[lang="ar"] .logo-en, html[lang="ar"] .seal-ring { font-family: "Fraunces", 
 }
 .frame img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 1s var(--ease); }
 a.frame:hover img { transform: scale(1.04); }
-.f-cover { grid-column: span 7; grid-row: span 2; aspect-ratio: 4 / 3; }
+.f-cover { grid-column: span 7; grid-row: span 2; aspect-ratio: 16 / 10; }
+.f-tall { grid-row: span 2; }
 .f-side { grid-column: span 5; min-height: 120px; }
 .board:not(.board-empty) .f-side img { position: absolute; inset: 0; }  /* the big frame sets the height */
-.f-tile { grid-column: span 4; aspect-ratio: 4 / 3; }
+.f-tile { grid-column: span 4; aspect-ratio: 16 / 10; }
 .swatches { grid-column: span 12; display: flex; gap: 0; list-style: none; padding: 0; margin: 0;
   border: var(--edge); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); }
 .swatches li { flex: 1; min-height: 90px; background: var(--c); display: flex; align-items: flex-end; padding: 10px 12px; }
@@ -802,7 +803,7 @@ a.frame:hover img { transform: scale(1.04); }
 .board-soon { grid-column: span 12; margin: 0; font-weight: 600; color: var(--ink-2); }
 @media (max-width: 760px) {
   .f-cover, .f-side { grid-column: span 12; grid-row: auto; }
-  .board:not(.board-empty) .f-side { aspect-ratio: 4 / 3; }
+  .board:not(.board-empty) .f-side { aspect-ratio: 16 / 10; }
   .f-tile { grid-column: span 6; }
   .board-empty .frame { min-height: 110px; }
   .swatches { flex-wrap: wrap; }

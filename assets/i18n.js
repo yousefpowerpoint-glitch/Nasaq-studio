@@ -34,6 +34,7 @@ window.I18N_AR = {
   "brands.apps": "التطبيقات",
   "brands.soon": "أول هوية تنزل هنا قريبًا.",
   "brands.palette": "لوحة الألوان",
+  "brands.concept": "مشروع مفاهيمي",
 
   "services.title": "/خدماتنا",
   "s1.name": "تصميم الواجهات وتجربة المستخدم",

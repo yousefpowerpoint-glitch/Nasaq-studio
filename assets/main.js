@@ -135,10 +135,15 @@
         };
         var imgs = b.images || [];
         return '<article class="board">' +
-          '<header class="board-head"><h3>' + name + '</h3><span class="card-kicker">' + (b.year || '') + '</span>' +
+          '<header class="board-head"><h3>' + name + '</h3><span class="card-kicker">' + (b.year || '') +
+            (b.concept ? ' · ' + t('brands.concept', 'Concept') : '') + '</span>' +
             (b.summary ? '<p>' + tr(b.summary) + '</p>' : '') + '</header>' +
           (b.cover ? pic({ src: b.cover, alt: b.name }, 'f-cover') : '') +
-          imgs.map(function (im, i) { return pic(im, i < 2 && b.cover ? 'f-side' : 'f-tile'); }).join('') +
+          imgs.map(function (im, i) {
+            // Beside the big frame: two images stack; a single one takes the full height
+            var cls = i < 2 && b.cover ? (imgs.length === 1 ? 'f-side f-tall' : 'f-side') : 'f-tile';
+            return pic(im, cls);
+          }).join('') +
           ((b.colors || []).length ? '<ul class="swatches" aria-label="' + t('brands.palette', 'Palette') + '">' + b.colors.map(function (c) {
             return '<li style="--c:' + c + '"><span>' + c.toUpperCase() + '</span></li>';
           }).join('') + '</ul>' : '') +
