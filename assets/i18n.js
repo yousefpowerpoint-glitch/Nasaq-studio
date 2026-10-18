@@ -78,6 +78,8 @@ window.I18N_AR = {
   "reel.soon": "مقطع الموشن قريبًا",
   "hero.solidFit": "نســـــق",
   "brief.type": "وش تحتاج؟",
+  "brief.many": "اختر كل اللي تحتاجه",
+  "brief.pickOne": "اختر خدمة وحدة على الأقل.",
   "brief.web": "موقع",
   "brief.brand": "هوية بصرية",
   "brief.ui": "تصميم واجهات",

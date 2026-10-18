@@ -607,6 +607,11 @@ a.pill:hover { transform: translate(-2px, -2px); box-shadow: 3px 3px 0 var(--ink
 .opts input:checked::after { transform: scale(1); }
 .opts label:hover input { transform: scale(1.12); }
 .opts input:focus-visible { outline: 3px solid var(--red); outline-offset: 2px; }
+/* the services question takes several answers: square boxes with a tick */
+.opts input[type="checkbox"] { border-radius: 5px; }
+.opts input[type="checkbox"]::after { width: 9px; height: 5px; border-radius: 0; background: none; border: solid var(--cream); border-width: 0 0 3px 3px; transform: translateY(-1px) rotate(-45deg) scale(0); }
+.opts input[type="checkbox"]:checked::after { transform: translateY(-1px) rotate(-45deg) scale(1); }
+.brief legend small { display: block; font-family: var(--body); font-weight: 600; font-size: 13px; color: var(--muted); }
 .brief-name { display: grid; grid-template-columns: 170px 1fr; gap: 20px; align-items: center; font-family: var(--display); font-weight: 800; font-size: 20px; }
 .brief-name input {
   font: 600 17px var(--body); color: var(--ink);

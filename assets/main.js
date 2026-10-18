@@ -123,10 +123,13 @@
     brief.addEventListener('submit', function (e) {
       e.preventDefault();
       var note = document.getElementById('brief-note');
+      // one or more choices per question (the services are checkboxes, the timeline a single choice)
       var pick = function (name) {
-        var el = brief.querySelector('input[name="' + name + '"]:checked');
-        return el ? el.parentElement.querySelector('span').textContent : '';
+        return Array.prototype.map.call(brief.querySelectorAll('input[name="' + name + '"]:checked'), function (el) {
+          return el.parentElement.querySelector('span').textContent;
+        }).join(AR ? '، ' : ', ');
       };
+      if (!pick('type')) { note.textContent = t('brief.pickOne', 'Pick at least one service.'); return; }
       var name = document.getElementById('brief-name').value.trim();
       var msg = [
         t('brief.hello', "Hi Nasaq Studio, I'd like to start a project."),
