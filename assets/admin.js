@@ -518,7 +518,20 @@
   });
 
   api('session').then(function (r) {
-    if (!r.configured) { $('#setup').hidden = false; return; }
+    if (r._status !== 200) {
+      // The API itself did not answer: the functions are not deployed (or crashed)
+      $('#setup').hidden = false;
+      $('#setup-why').textContent = 'الخادم ما رد (' + r._status + '). تأكد إن آخر نشر في Vercel نجح (Ready).';
+      return;
+    }
+    if (!r.configured) {
+      var why = { GITHUB_TOKEN: 'GITHUB_TOKEN غير موجود.', ADMIN_PASSWORD: 'ADMIN_PASSWORD غير موجود.',
+        ADMIN_PASSWORD_SHORT: 'ADMIN_PASSWORD موجود بس أقصر من 10 أحرف.' };
+      $('#setup').hidden = false;
+      $('#setup-why').textContent = (r.missing || []).map(function (k) { return why[k] || k; }).join(' ') ||
+        'الإعدادات ناقصة.';
+      return;
+    }
     if (!r.loggedIn) return showGate();
     load();
   }, function () { showGate('ما في اتصال بالخادم.'); });
