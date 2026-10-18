@@ -104,7 +104,7 @@
     }
   }
   function mountModel(el, proj) {
-    if (!el || !proj || !proj.model || !window.mount3D) return;
+    if (!el || !proj || !proj.model || proj.use3d === false || !window.mount3D) return;
     function go() { loadThree().then(function () { mountNow(el, proj); }, function () {}); }
     if (!('IntersectionObserver' in window)) return go();
     var io = new IntersectionObserver(function (entries) {

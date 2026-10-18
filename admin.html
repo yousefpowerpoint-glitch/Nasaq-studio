@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>لوحة نسق</title>
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=Lalezar&display=swap">
+<link rel="stylesheet" href="assets/admin.css">
+</head>
+<body>
+
+<!-- Sign in -->
+<section class="gate" id="gate" hidden>
+  <form class="gate-card" id="login">
+    <span class="logo">نسق <small>NASAQ</small></span>
+    <h1>لوحة التحكم</h1>
+    <label class="field">
+      <span>كلمة السر</span>
+      <input type="password" id="password" autocomplete="current-password" required>
+    </label>
+    <button class="btn btn-red" type="submit">دخول</button>
+    <p class="msg" id="login-msg" role="alert"></p>
+  </form>
+</section>
+
+<!-- Not set up yet -->
+<section class="gate" id="setup" hidden>
+  <div class="gate-card">
+    <span class="logo">نسق <small>NASAQ</small></span>
+    <h1>اللوحة تحتاج إعداد</h1>
+    <p>أضف هذي القيم في Vercel ← المشروع ← Settings ← Environment Variables، ثم أعد النشر (Redeploy):</p>
+    <ul class="setup-list">
+      <li><code>ADMIN_PASSWORD</code> كلمة سر اللوحة (10 أحرف أو أكثر)</li>
+      <li><code>GITHUB_TOKEN</code> توكن GitHub لهذا المستودع فقط، بصلاحية Contents: Read and write</li>
+    </ul>
+  </div>
+</section>
+
+<!-- Dashboard -->
+<div class="app" id="app" hidden>
+  <header class="top">
+    <span class="logo">نسق <small>لوحة التحكم</small></span>
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-tab="brands" aria-selected="true">الهويات البصرية</button>
+      <button role="tab" data-tab="projects" aria-selected="false">المشاريع</button>
+      <button role="tab" data-tab="settings" aria-selected="false">الإعدادات</button>
+    </nav>
+    <div class="top-end">
+      <a class="link" href="/" target="_blank" rel="noopener">افتح الموقع ↗</a>
+      <button class="link" id="logout" type="button">خروج</button>
+    </div>
+  </header>
+
+  <main class="panel" id="panel"></main>
+
+  <footer class="savebar">
+    <p class="status" id="status" role="status">لا توجد تغييرات.</p>
+    <button class="btn btn-red" id="save" type="button" disabled>احفظ وانشر</button>
+  </footer>
+</div>
+
+<script src="assets/admin.js"></script>
+</body>
+</html>
