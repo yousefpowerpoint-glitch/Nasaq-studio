@@ -452,7 +452,7 @@
   // Open once the headline font is in (2 s at most), so the hero is measured and drawn only once.
   // Body text fonts can arrive later; they don't change the hero.
   var fontsIn = document.fonts && document.fonts.load
-    ? Promise.race([document.fonts.load('400 100px Lalezar', 'نسّق استديو').catch(function () {}),
+    ? Promise.race([document.fonts.load('700 100px "IBM Plex Sans Arabic"', 'نسّق استديو').catch(function () {}),
         new Promise(function (r) { setTimeout(r, 2000); })])
     : Promise.resolve();
   fontsIn.then(function () {
