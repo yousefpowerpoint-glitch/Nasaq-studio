@@ -6,8 +6,9 @@
   var hasGsap = typeof window.gsap !== 'undefined';
   var EASE = 'expo.out';
 
+  var slow = root.classList.contains('is-slow');
   // Never leave the page covered: if anything below fails, drop the intro after 2.5 s.
-  var safety = setTimeout(function () { root.classList.remove('js-intro'); }, 2500);
+  var safety = setTimeout(function () { root.classList.remove('js-intro'); }, 3500);
 
   /* ---------- Film grain (drawn once, then tiled) ---------- */
   (function grain() {
@@ -104,14 +105,14 @@
     }
   }
   function mountModel(el, proj) {
-    if (!el || !proj || !proj.model || proj.use3d === false || !window.mount3D) return;
+    if (!el || !proj || !proj.model || proj.use3d === false || !window.mount3D || slow) return;
     function go() { loadThree().then(function () { mountNow(el, proj); }, function () {}); }
     if (!('IntersectionObserver' in window)) return go();
     var io = new IntersectionObserver(function (entries) {
       if (!entries[0].isIntersecting) return;
       io.disconnect();
       go();
-    }, { rootMargin: '400px 0px' });
+    }, { rootMargin: '150px 0px' });
     io.observe(el);
   }
 
@@ -131,7 +132,7 @@
         var name = tr(b.name);
         var pic = function (im, cls) {
           return '<a class="frame ' + cls + '" href="' + im.src + '" target="_blank" rel="noopener">' +
-            '<img src="' + im.src + '" alt="' + (tr(im.alt) || name) + '" loading="lazy" decoding="async"></a>';
+            '<img data-src="' + im.src + '" alt="' + (tr(im.alt) || name) + '" decoding="async"></a>';
         };
         var imgs = b.images || [];
         return '<article class="board">' +
@@ -167,20 +168,29 @@
   if (reel) {
     var screen = reel.querySelector('.reel-screen');
     if (SITE.reel) {
-      // Only the poster loads up front; the film is fetched when the reel nears the screen
-      // and pauses whenever it scrolls away.
-      screen.innerHTML = '<video' + (SITE.reelPoster ? ' poster="' + SITE.reelPoster + '"' : '') +
-        ' muted loop playsinline preload="none"></video>';
+      // Nothing loads until the reel is close. Phones and slow links get the lighter cut;
+      // on a slow link the film waits for a tap instead of playing by itself.
+      var lite = slow || window.innerWidth < 760;
+      var src = lite && SITE.reelLite ? SITE.reelLite : SITE.reel;
+      var poster = lite && SITE.reelPosterLite ? SITE.reelPosterLite : SITE.reelPoster;
+      screen.innerHTML = '<video muted loop playsinline preload="none"></video>' +
+        (slow ? '<button class="reel-play" type="button" aria-label="' + t('reel.play', 'Play') + '">▶</button>' : '');
       reel.classList.add('has-video');
       var vid = screen.querySelector('video');
-      if (!('IntersectionObserver' in window)) { if (!reduce) { vid.src = SITE.reel; vid.autoplay = true; } }
+      var start = function () {
+        if (!vid.src) vid.src = src;
+        var pr = vid.play(); if (pr && pr.catch) pr.catch(function () {});
+      };
+      if (slow) screen.querySelector('.reel-play').addEventListener('click', function (e) {
+        e.currentTarget.remove(); start();
+      });
+      if (!('IntersectionObserver' in window)) { if (poster) vid.poster = poster; if (!reduce && !slow) { vid.src = src; vid.autoplay = true; } }
       else new IntersectionObserver(function (entries) {
-        if (reduce) return; // reduced motion: the poster stands in for the film
-        if (entries[0].isIntersecting) {
-          if (!vid.src) vid.src = SITE.reel;
-          var pr = vid.play(); if (pr && pr.catch) pr.catch(function () {});
-        } else if (vid.src) vid.pause();
-      }, { rootMargin: '200px 0px' }).observe(reel);
+        var on = entries[0].isIntersecting;
+        if (on && poster && !vid.poster) vid.poster = poster;
+        if (reduce || slow) return; // the poster stands in until a tap
+        if (on) start(); else if (vid.src) vid.pause();
+      }, { rootMargin: '300px 0px' }).observe(reel);
     } else if (!reduce) {
       var n = reel.querySelector('.leader-n'), k = 3;
       setInterval(function () { k = k === 1 ? 3 : k - 1; n.textContent = k; }, 1000);
@@ -316,7 +326,7 @@
           '<h2>' + t('proj.solution', 'Solution') + '</h2><p class="reveal">' + draft(tr(p.solution)) + '</p>' +
         '</section>' +
         (p.gallery.length ? '<section class="wrap p-gallery">' + p.gallery.map(function (src) {
-          return '<img class="reveal" src="' + src + '" alt="' + tr(p.title) + '" loading="lazy">';
+          return '<img class="reveal" data-src="' + src + '" alt="' + tr(p.title) + '" decoding="async">';
         }).join('') + '</section>' : '') +
         '<section class="p-next wrap">' +
           (p.url ? '<a class="btn btn-red magnetic" href="' + p.url + '" target="_blank" rel="noopener">' + t('proj.visitBig', 'Visit the live site') + ' <span class="arr">↗</span></a>'
@@ -327,6 +337,19 @@
       mountModel(pageEl.querySelector('.p-cover'), p);
     }
   }
+
+  /* ---------- Images load only when close to the screen ---------- */
+  // Tighter than the browser's own lazy loading, which fetches far ahead on slow links
+  // and would compete with the fonts the first screen needs.
+  (function lazyImages() {
+    var imgs = document.querySelectorAll('img[data-src]');
+    var show = function (img) { img.src = img.getAttribute('data-src'); img.removeAttribute('data-src'); };
+    if (!('IntersectionObserver' in window)) return imgs.forEach(show);
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { io.unobserve(e.target); show(e.target); } });
+    }, { rootMargin: '350px 0px' });
+    imgs.forEach(function (img) { io.observe(img); });
+  })();
 
   /* ---------- Accordions: services, FAQ ---------- */
   document.querySelectorAll('.acc-head').forEach(function (head) {
@@ -362,7 +385,6 @@
     splitInto(solid);
   }
   fitHero();
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitHero);
   window.addEventListener('resize', fitHero);
 
   /* ---------- Sticky nav state ---------- */
@@ -391,6 +413,11 @@
   document.querySelectorAll('[data-todo]').forEach(function (a) {
     a.addEventListener('click', function (e) { e.preventDefault(); });
   });
+
+  /* ---------- Offline cache: repeat visits open even on a weak connection ---------- */
+  if ('serviceWorker' in navigator && location.protocol === 'https:') {
+    window.addEventListener('load', function () { navigator.serviceWorker.register('/sw.js').catch(function () {}); });
+  }
 
   /* ---------- Without GSAP or with reduced motion: show everything, done ---------- */
   if (!hasGsap || reduce) {
@@ -422,7 +449,14 @@
   var irisState = { r: 0 };
   function setIris() { iris.style.setProperty('--r', irisState.r + 'vmax'); }
 
-  // Open on load
+  // Open once the headline font is in (2 s at most), so the hero is measured and drawn only once.
+  // Body text fonts can arrive later; they don't change the hero.
+  var fontsIn = document.fonts && document.fonts.load
+    ? Promise.race([document.fonts.load('400 100px Lalezar', 'نسّق استديو').catch(function () {}),
+        new Promise(function (r) { setTimeout(r, 2000); })])
+    : Promise.resolve();
+  fontsIn.then(function () {
+  fitHero();
   root.classList.remove('js-intro');
   document.querySelectorAll('.hero, .p-hero').forEach(function (h) { h.classList.add('is-flicker'); });
   iris.style.visibility = 'visible';
@@ -437,6 +471,7 @@
   if (document.querySelector('.nav')) intro.from('.nav-in > *', { y: -24, opacity: 0, duration: 1, stagger: .06, clearProps: 'transform,opacity' }, 1.0);
   var heroReveal = document.querySelectorAll('.hero .reveal, .p-kicker, .p-meta, .p-back');
   if (heroReveal.length) intro.from(heroReveal, { y: 30, opacity: 0, duration: 1.1, stagger: .1, clearProps: 'transform,opacity' }, 1.15);
+  });
 
   // Close, then leave (links marked data-iris)
   leave = function (e, then) {

@@ -100,6 +100,7 @@ window.I18N_AR = {
   "socials": "روابط التواصل",
   "reel.title": "الشوريل",
   "spin": "↔ اسحب للتدوير",
+  "reel.play": "شغّل",
   "reel.soon": "مقطع الموشن قريبًا",
   "hero.solidFit": "نسّـــــق",
   "brief.type": "وش تحتاج؟",

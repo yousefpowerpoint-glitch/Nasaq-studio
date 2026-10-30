@@ -2,7 +2,7 @@
    If the project has a logo, it sits on the court instead of the title badge. */
 window.coverHTML = function (p) {
   var title = window.tr(p.title);
-  if (p.cover) return '<img src="' + p.cover + '" alt="' + title + '" loading="lazy">';
+  if (p.cover) return '<img data-src="' + p.cover + '" alt="' + title + '" decoding="async">';  // main.js loads it near view
   // A poster in the client's own colours, for sites we can't screenshot yet
   if (p.poster) {
     var q = p.poster, rays = '';

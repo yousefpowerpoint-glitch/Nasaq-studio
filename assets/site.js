@@ -2,6 +2,8 @@
 window.SITE = {
   "reel": "assets/reel/services.mp4",
   "reelPoster": "assets/reel/services.jpg",
+  "reelLite": "assets/reel/services-lite.mp4",
+  "reelPosterLite": "assets/reel/services-lite.jpg",
   "whatsapp": "967737481653",
   "url": "https://nasaqstudio.online",
   "socials": [

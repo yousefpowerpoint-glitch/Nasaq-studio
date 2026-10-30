@@ -16,14 +16,28 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#F1E4C6">
 <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..900,0..100,0..1&family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=Lalezar&display=swap">
 <script>
   (function (d) {
     // Arabic is the default; English only when the visitor picked it
     var l; try { l = localStorage.getItem('nasaq-lang'); } catch (e) {}
     if (l !== 'en') { d.lang = 'ar'; d.dir = 'rtl'; }
+    // Fonts for this language only. Arabic fonts live on this site (no extra connections on a slow
+    // link) and the headline font is fetched first, so the hero shows in its final font from the start.
+    var add = function (rel, href, as) {
+      var l = document.createElement('link'); l.rel = rel; l.href = href;
+      if (as) { l.as = as; l.type = 'font/woff2'; l.crossOrigin = 'anonymous'; }
+      document.head.appendChild(l);
+    };
+    if (d.lang === 'ar') {
+      add('preload', 'assets/fonts/lalezar-400-arabic.woff2', 'font');
+      add('stylesheet', 'assets/fonts/fonts-ar.css');
+    } else {
+      add('stylesheet', 'https://fonts.googleapis.com/css2?display=swap&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,800' +
+        '&family=Fraunces:opsz,wght,SOFT,WONK@9..144,800..900,0..100,0..1');
+    }
+    // Slow or data-saving connections skip the 3D models and wait for a tap before playing video
+    var c = navigator.connection || {};
+    if (c.saveData || /(^|-)2g|3g/.test(c.effectiveType || '') || (c.downlink && c.downlink < 1.5)) d.classList.add('is-slow');
     d.classList.add('js-intro');
   })(document.documentElement);
 </script>

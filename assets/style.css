@@ -818,3 +818,10 @@ a.frame:hover img { transform: scale(1.04); }
 .poster-type b { font-family: var(--display); font-weight: 900; font-size: clamp(30px, 5vw, 64px); line-height: .95; text-transform: uppercase; }
 .poster-type i { font-style: normal; font-weight: 600; font-size: clamp(14px, 1.6vw, 18px); opacity: .85; }
 .poster-type b::after { content: ""; display: block; width: 64px; height: 3px; margin: 14px auto 2px; background: var(--pa); }
+
+/* Slow connections: the reel waits for a tap */
+.reel-play {
+  position: absolute; inset: 0; margin: auto; width: 84px; height: 84px; border-radius: 50%;
+  border: var(--edge); background: var(--mustard); color: var(--ink); box-shadow: var(--shadow);
+  font-size: 30px; cursor: pointer; display: grid; place-items: center; padding-inline-start: 6px;
+}
