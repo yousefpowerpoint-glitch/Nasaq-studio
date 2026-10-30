@@ -3,6 +3,23 @@
 window.coverHTML = function (p) {
   var title = window.tr(p.title);
   if (p.cover) return '<img src="' + p.cover + '" alt="' + title + '" loading="lazy">';
+  // A poster in the client's own colours, for sites we can't screenshot yet
+  if (p.poster) {
+    var q = p.poster, rays = '';
+    for (var i = 0; i < 24; i++) {
+      var a0 = i * Math.PI / 12, a1 = a0 + Math.PI / 30;
+      rays += '<path d="M200 125L' + (200 + 400 * Math.cos(a0)).toFixed(1) + ' ' + (125 + 400 * Math.sin(a0)).toFixed(1) +
+        'L' + (200 + 400 * Math.cos(a1)).toFixed(1) + ' ' + (125 + 400 * Math.sin(a1)).toFixed(1) + 'Z"/>';
+    }
+    return '<div class="cover-art cover-poster" role="img" aria-label="' + title + '" style="--pb:' + q.bg + ';--pf:' + q.fg + ';--pa:' + q.accent + '">' +
+      '<svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' +
+        '<rect width="400" height="250" fill="' + q.bg + '"/><g fill="' + q.fg + '" opacity=".06">' + rays + '</g>' +
+        '<rect x="14" y="14" width="372" height="222" fill="none" stroke="' + q.accent + '" stroke-width="1.5"/>' +
+      '</svg>' +
+      '<div class="poster-type"><span>' + (window.tr(q.kicker) || '') + '</span><b>' + title + '</b>' +
+        '<i>' + (window.tr(p.subtitle) || '') + '</i></div>' +
+    '</div>';
+  }
   var c = p.coverStyle || { court: "#2F6E8F", line: "#F6EBD2", accent: "#F0BE2C" };
   var badge = p.logo
     ? '<div class="cover-type cover-logo"><img src="' + p.logo + '" alt="' + title + ' logo"></div>'

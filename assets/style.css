@@ -809,3 +809,12 @@ a.frame:hover img { transform: scale(1.04); }
   .swatches { flex-wrap: wrap; }
   .swatches li { flex-basis: 50%; }
 }
+
+/* Covers: screenshots fill the frame; posters stand in for sites we can't screenshot */
+.card-media > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+.p-cover > img { object-position: top center; }
+.poster-type { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 6px; text-align: center; padding: 24px; color: var(--pf); }
+.poster-type span { font-size: 12px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; color: var(--pa); }
+.poster-type b { font-family: var(--display); font-weight: 900; font-size: clamp(30px, 5vw, 64px); line-height: .95; text-transform: uppercase; }
+.poster-type i { font-style: normal; font-weight: 600; font-size: clamp(14px, 1.6vw, 18px); opacity: .85; }
+.poster-type b::after { content: ""; display: block; width: 64px; height: 3px; margin: 14px auto 2px; background: var(--pa); }
