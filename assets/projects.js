@@ -121,22 +121,25 @@ window.PROJECTS = [
   },
   {
     "id": "harvard-aden",
-    "title": "Harvard Aden",
+    "title": {
+      "en": "Harvard Aden",
+      "ar": "معهد هارفرد"
+    },
     "subtitle": {
-      "en": "Institute · Aden",
-      "ar": "معهد تدريب · عدن"
+      "en": "American Institute",
+      "ar": "الأمريكي · عدن"
     },
     "type": "website",
     "tags": {
       "en": [
         "Institute site",
-        "Courses · English test",
-        "WhatsApp sign-up"
+        "English · Computer · Accounting",
+        "WhatsApp booking"
       ],
       "ar": [
         "موقع معهد",
-        "دورات · اختبار إنجليزي",
-        "تسجيل عبر واتساب"
+        "إنجليزي · حاسوب · محاسبة",
+        "حجز عبر واتساب"
       ]
     },
     "year": "2026",
@@ -155,23 +158,14 @@ window.PROJECTS = [
     "url": "https://harvard-aden-demo.vercel.app/",
     "model": null,
     "logo": null,
-    "cover": null,
-    "poster": {
-      "bg": "#14213D",
-      "fg": "#FFFFFF",
-      "accent": "#C9A44C",
-      "kicker": {
-        "en": "18 years in Aden",
-        "ar": "18 سنة في عدن"
-      }
-    },
+    "cover": "assets/work/harvard-aden/home.webp",
     "summary": {
-      "en": "A site for a training institute in Aden: upcoming courses, morning and evening batches, an English level test, and sign-up over WhatsApp.",
-      "ar": "موقع لمعهد تدريب في عدن: الدورات القادمة، دفعات صباحية ومسائية، اختبار تحديد مستوى الإنجليزي، والتسجيل عبر واتساب."
+      "en": "A site for Harvard American Institute in Al-Mansoura, Aden: English, computer and accounting courses, upcoming batches, and booking a seat over WhatsApp.",
+      "ar": "موقع معهد هارفرد الأمريكي في المنصورة: دورات الإنجليزي والحاسوب والمحاسبة، الدفعات القادمة، وحجز المقعد عبر واتساب."
     },
     "overview": {
-      "en": "The institute's front door online: its courses, from English to accounting and motion graphics, and what every student gets.",
-      "ar": "واجهة المعهد على الإنترنت: دوراته من الإنجليزي للمحاسبة والموشن جرافيك، وإيش يحصل عليه كل طالب."
+      "en": "The institute's front door online, 18 years in Aden: its programs, upcoming courses and fully renovated training halls.",
+      "ar": "واجهة المعهد على الإنترنت بعد 18 سنة في عدن: برامجه، ودوراته القادمة، وقاعاته المجددة بالكامل."
     },
     "challenge": {
       "en": "Students needed to see what's starting soon and sign up without a phone call or a visit.",
@@ -180,6 +174,62 @@ window.PROJECTS = [
     "solution": {
       "en": "Cards for upcoming courses with their dates, an English placement test, and a sign-up form that sends straight to WhatsApp. We also made a 20-second promo for social media.",
       "ar": "بطاقات للدورات القادمة بتواريخها، اختبار تحديد مستوى الإنجليزي، ونموذج تسجيل يرسل مباشرة على واتساب. وسوينا له كمان فيديو موشن 20 ثانية للسوشال."
+    },
+    "gallery": []
+  },
+  {
+    "id": "nawras",
+    "title": {
+      "en": "Al-Nawras Schools",
+      "ar": "مدارس النورس"
+    },
+    "subtitle": {
+      "en": "Private schools · Aden",
+      "ar": "الأهلية · عدن"
+    },
+    "type": "website",
+    "tags": {
+      "en": [
+        "School site",
+        "Kindergarten to secondary",
+        "Since 2004"
+      ],
+      "ar": [
+        "موقع مدرسة",
+        "من الروضة إلى الثانوي",
+        "منذ 2004"
+      ]
+    },
+    "year": "2026",
+    "role": {
+      "en": [
+        "Design",
+        "Development"
+      ],
+      "ar": [
+        "التصميم",
+        "التطوير"
+      ]
+    },
+    "url": "https://nawras-aden-demo.vercel.app/",
+    "model": null,
+    "logo": null,
+    "cover": "assets/work/nawras/home.webp",
+    "summary": {
+      "en": "A site for Al-Nawras Private Schools in Aden: every stage from kindergarten to secondary, for boys and girls, with their branches and achievements.",
+      "ar": "موقع مدارس النورس الأهلية في عدن: كل المراحل من الروضة إلى الثانوي، للبنين والبنات، مع الفروع والإنجازات."
+    },
+    "overview": {
+      "en": "A school group in Aden since 2004. The site walks parents through each stage, the school's achievements and its branches.",
+      "ar": "مدارس في عدن منذ 2004. الموقع يعرّف أولياء الأمور بكل مرحلة، وإنجازات المدرسة، وفروعها."
+    },
+    "challenge": {
+      "en": "Parents comparing schools need to see the stages, the results and the nearest branch at a glance, and ask about enrolment easily.",
+      "ar": "ولي الأمر اللي يقارن بين المدارس يحتاج يشوف المراحل والنتائج وأقرب فرع بنظرة وحدة، ويسأل عن التسجيل بسهولة."
+    },
+    "solution": {
+      "en": "A clear page in the school's teal and orange: the four stages laid out as steps, achievements and branches, and an enrolment inquiry button always in reach.",
+      "ar": "صفحة واضحة بألوان المدرسة (التركوازي والبرتقالي): المراحل الأربع مرتبة كدرجات، الإنجازات والفروع، وزر «اسأل عن التسجيل» دائمًا قريب."
     },
     "gallery": []
   }
