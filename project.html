@@ -25,9 +25,9 @@
       add('stylesheet', 'https://fonts.googleapis.com/css2?display=swap&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,800' +
         '&family=Fraunces:opsz,wght,SOFT,WONK@9..144,800..900,0..100,0..1');
     }
-    // Slow or data-saving connections skip the 3D models and wait for a tap before playing video
+    // Very slow (2G) or Data Saver connections wait for a tap before playing video
     var c = navigator.connection || {};
-    if (c.saveData || /(^|-)2g|3g/.test(c.effectiveType || '') || (c.downlink && c.downlink < 1.5)) d.classList.add('is-slow');
+    if (c.saveData || /2g/.test(c.effectiveType || '')) d.classList.add('is-slow');
     d.classList.add('js-intro');
   })(document.documentElement);
 </script>

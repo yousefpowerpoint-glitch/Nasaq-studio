@@ -185,6 +185,16 @@
     scene.add(new THREE.HemisphereLight(0xFFF4DC, 0x6E5E4E, 0.75));
     var sun = new THREE.DirectionalLight(0xFFFFFF, 0.8); sun.position.set(4, 10, 6); scene.add(sun);
 
+    // Soft contact shadow on the ground, so the model sits instead of floating
+    var sc = document.createElement('canvas'); sc.width = sc.height = 128;
+    var sx = sc.getContext('2d'), sg = sx.createRadialGradient(64, 64, 0, 64, 64, 64);
+    sg.addColorStop(0, 'rgba(28,22,18,.32)'); sg.addColorStop(.55, 'rgba(28,22,18,.14)'); sg.addColorStop(1, 'rgba(28,22,18,0)');
+    sx.fillStyle = sg; sx.fillRect(0, 0, 128, 128);
+    var ground = new THREE.Mesh(new THREE.PlaneGeometry(12, 12),
+      new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(sc), transparent: true, depthWrite: false }));
+    ground.rotation.x = -Math.PI / 2; ground.position.y = -0.3;
+    scene.add(ground);
+
     var spin = new THREE.Group(); scene.add(spin);
     var root = new THREE.Group(); spin.add(root);
     var update = MODELS[project.model](THREE, root, toonRamp(THREE), project.coverStyle);
