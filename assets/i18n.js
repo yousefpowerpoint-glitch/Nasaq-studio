@@ -26,6 +26,11 @@ window.I18N_AR = {
   "empty": "لا يوجد شيء هنا بعد. قريبًا.",
   "year.website": "موقع",
 
+  "mq.web": "مواقع",
+  "mq.brand": "هويات بصرية",
+  "mq.ui": "تصميم واجهات",
+  "mq.motion": "موشن",
+
   "brands.ghost": "هوية",
   "brands.title": "/الهوية البصرية",
   "brands.note": "شعارات وألوان وكل ما يحيط بها",
