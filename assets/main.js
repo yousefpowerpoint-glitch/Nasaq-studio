@@ -95,24 +95,31 @@
     });
     return threeReady;
   }
+  // The drawn cover stays until the model's first frame is on screen, then fades over to it.
   function mountNow(el, proj) {
-    var fallback = el.innerHTML;
-    el.innerHTML = '';
-    if (window.mount3D(el, proj)) {
-      el.insertAdjacentHTML('beforeend', '<span class="spin-hint" aria-hidden="true">' + t('spin', '↔ Drag to spin') + '</span>');
-    } else {
-      el.innerHTML = fallback;
-    }
+    var old = Array.prototype.slice.call(el.childNodes);
+    if (!window.mount3D(el, proj)) return;
+    el.insertAdjacentHTML('beforeend', '<span class="spin-hint" aria-hidden="true">' + t('spin', '↔ Drag to spin') + '</span>');
+    requestAnimationFrame(function () {
+      el.classList.add('is-3d-in');
+      setTimeout(function () { old.forEach(function (n) { if (n.parentNode) n.parentNode.removeChild(n); }); }, 900);
+    });
   }
+  // Every visitor gets the model, even on a slow link: it is fetched after the page has
+  // finished loading, so it never holds up the first screen. Only Data Saver skips it.
+  var saveData = !!(navigator.connection && navigator.connection.saveData);
+  var pageLoaded = new Promise(function (r) {
+    if (document.readyState === 'complete') r(); else window.addEventListener('load', function () { r(); });
+  });
   function mountModel(el, proj) {
-    if (!el || !proj || !proj.model || proj.use3d === false || !window.mount3D || slow) return;
-    function go() { loadThree().then(function () { mountNow(el, proj); }, function () {}); }
+    if (!el || !proj || !proj.model || proj.use3d === false || !window.mount3D || saveData) return;
+    function go() { pageLoaded.then(loadThree).then(function () { mountNow(el, proj); }, function () {}); }
     if (!('IntersectionObserver' in window)) return go();
     var io = new IntersectionObserver(function (entries) {
       if (!entries[0].isIntersecting) return;
       io.disconnect();
       go();
-    }, { rootMargin: '150px 0px' });
+    }, { rootMargin: '400px 0px' });
     io.observe(el);
   }
 

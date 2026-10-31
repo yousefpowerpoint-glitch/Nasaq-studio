@@ -825,3 +825,8 @@ a.frame:hover img { transform: scale(1.04); }
   border: var(--edge); background: var(--mustard); color: var(--ink); box-shadow: var(--shadow);
   font-size: 30px; cursor: pointer; display: grid; place-items: center; padding-inline-start: 6px;
 }
+
+/* 3D covers fade in over the drawn cover once the first frame is ready */
+.has-3d > canvas { opacity: 0; transition: opacity .8s var(--ease); z-index: 1; }
+.has-3d.is-3d-in > canvas { opacity: 1; }
+.has-3d > .spin-hint { z-index: 2; }
